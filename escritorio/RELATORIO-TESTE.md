@@ -54,3 +54,21 @@ São 2 buscas apenas, então a taxa não diz nada sobre o uso real.
 ## Decisões em aberto (seção 8)
 
 Quais andares criar além destes dois; assinatura ou API; um acervo único ou um por projeto; tipos de pesquisa mais frequentes.
+
+## Teste 2: fluxo por script (2026-10-21)
+
+Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram e no TikTok.
+
+| Etapa | Feita por | Tokens (medidos) |
+|---|---|---|
+| `pedir` + `triar` (MISS, ROTA por regra para pesquisador-redes-sociais) | script | 0 de subagente |
+| Pesquisa, nível padrão | pesquisador-redes-sociais (Sonnet) | 40.072 |
+| `checar` | script | 0 (nota provisória 3) |
+| Curadoria | diretor-pesquisa (Haiku) | 17.633 (nota 3 confirmada) |
+
+- A triagem por subagente custava de 13.501 a 58.993 tokens; agora custa zero.
+- A curadoria caiu de 26.782 a 71.682 tokens para 17.633.
+- O fluxo de HIT (`triar` respondendo sozinho) foi testado numa cópia do acervo: nenhum subagente aberto.
+- **A pesquisa não foi arquivada.** A política de rede do ambiente bloqueia os sites das fontes (buffer.com, metricool.com, tiktok.com e about.instagram.com recebem 403 do gateway), então o pesquisador só viu resumos de busca.
+- O `checar` original teria dado nota 4. Acrescentei o desconto "mais [não verificado] que [verificado]", e com ele a nota caiu para 3. As duas pesquisas antigas continuam com nota 4.
+- O pedido segue aberto, com as lacunas registradas, até a rede ser liberada.

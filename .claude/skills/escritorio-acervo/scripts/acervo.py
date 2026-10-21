@@ -676,6 +676,10 @@ def cmd_checar(a):
     ]
     pontos = sum(ok for _, ok, _ in itens)
     ajuste = -1 if (sem_fonte or num_nao_verif) else 0
+    # passe de verificacao: a maioria das afirmacoes marcadas precisa estar verificada
+    pouca_verificacao = nao_verif > verif
+    if pouca_verificacao:
+        ajuste -= 1
     print(f"CHECAGEM: {arq}  (nivel {a.nivel})")
     for nome, ok, det in itens:
         print(f"  [{'x' if ok else ' '}] {nome}: {det}")
@@ -684,8 +688,11 @@ def cmd_checar(a):
         print(f"  ajuste -1: {len(sem_fonte)} item(ns) de Achados sem citacao [n], ex.: {sem_fonte[0][:100]}")
     if num_nao_verif:
         print(f"  ajuste -1: {len(num_nao_verif)} numero(s) marcados como nao verificados, ex.: {num_nao_verif[0][:100]}")
+    if pouca_verificacao:
+        print(f"  ajuste -1: mais afirmacoes [nao verificado] ({nao_verif}) que [verificado] ({verif}); "
+              "o passe de verificacao nao foi feito (leia as fontes inteiras)")
     nota = max(1, pontos + ajuste)
-    print(f"NOTA_PROVISORIA: {nota}  ({pontos} itens {'- 1 de ajuste' if ajuste else 'sem ajuste'})")
+    print(f"NOTA_PROVISORIA: {nota}  ({pontos} itens, ajuste {ajuste})")
     print("PARA_JULGAR (o script nao ve): profundidade real de cada angulo; se as afirmacoes centrais tem 2+ "
           "fontes independentes; se as fontes primarias existem de fato. Confirme ou corrija a nota.")
 
