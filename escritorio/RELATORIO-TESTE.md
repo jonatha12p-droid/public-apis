@@ -86,3 +86,11 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - O novo pedido aceita estudos de vendors como evidência direcional, não exige recorte por tamanho de conta e trata a posição oficial ilegível como lacuna.
 - Custos: pesquisa partindo do rascunho anterior, 76.809 tokens; curadoria, 21.432 (nota 3: só uma fonte para o horário do Instagram); rodada extra, 67.374; curadoria final, 26.746 (nota 4, arquivada). Total do v2: 192.361 tokens.
 - Busca de teste depois do arquivamento: HIT. Auditoria: 0 problemas.
+
+## Skills de YouTube (Jakeschincariol/youtube-agent-skill), instaladas em 2026-10-21
+
+- Auditoria antes de instalar: 11 skills (`yt-*`) mais 6 scripts Python, licença MIT. Os scripts só leem os arquivos passados por argumento: nenhum acessa a rede, executa comandos ou lê credenciais. Os `SKILL.md` são só instruções de escrita. Nada publica no YouTube.
+- Instalação: pastas `yt-*` em `.claude/skills/` (escopo do projeto). A licença MIT ficou em `yt-script/LICENSE`, e o modelo de perfil de voz em `escritorio/design/modelos/youtube-voice.md`.
+- Teste: as 11 skills aparecem na sessão, `/yt-script` carrega e as 6 ferramentas rodam (`hookscore`, `title`, `deadair`, `chapters`, `retention`, `swipe`). `chapters`, `retention` e `swipe` recusam amostras muito pequenas, por desenho.
+- Limitação: o `hookscore.py` usa expressões em inglês. Com ganchos em português ele quase não reconhece fórmula e dá notas quase iguais (34 a 39, todas "WEAK"). Mesmo em inglês, todas ficaram "WEAK" (37 a 46). Serve como comparação relativa de ganchos em inglês, não como nota absoluta.
+- Para escrever roteiros completos, a skill pede `~/.claude/youtube/voice.md`, que ainda não existe.
