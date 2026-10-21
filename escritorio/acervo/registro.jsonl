@@ -4,3 +4,6 @@
 {"ts": "2026-10-21T13:52:52", "evento": "ROTA_REGRA", "agente": "pesquisador-tecnico"}
 {"ts": "2026-10-21T13:52:52", "evento": "HIT", "consulta": "prompt caching batch api preço anthropic ttl cache", "andar": "*"}
 {"ts": "2026-10-21T14:18:12", "evento": "HIT", "consulta": "claude code assinatura api custo cota", "andar": "*"}
+{"ts": "2026-10-21T14:22:16", "evento": "HIT", "consulta": "peso leitura cache cota assinatura claude code limite uso", "andar": "*"}
+{"ts": "2026-10-21T14:22:30", "evento": "ROTA_AMBIGUA"}
+{"ts": "2026-10-21T14:22:30", "evento": "HIT", "consulta": "cache prompt cota assinatura batch", "andar": "*"}
