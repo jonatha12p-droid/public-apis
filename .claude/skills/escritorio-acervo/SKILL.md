@@ -46,9 +46,9 @@ Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-socia
 
 - `acervo.py auditar` revisa o acervo sem gastar tokens: resumos fracos, poucas tags, incertezas fora do resumo, assuntos repetidos, HITs falsos no registro, pedidos sem resposta e arquivos fora do índice. Se terminar com `CURADOR: acione`, chame o agente `curador-acervo` só com os itens `[curador]`. Os itens `[diretor]` (vencidas, pedidos abertos) e `[script]` (reindexar, roteamento) não precisam dele.
 - `acervo.py vencidas` lista o que precisa de renovação. Renove só o que tem uso recente.
-- `acervo.py stats` mostra o reaproveitamento real (sem testes e sem HITs falsos), o custo medido por pedido, o custo por pesquisa arquivada e a economia medida. Ele só conta tokens de subagente: a sessão principal não é medida.
+- `acervo.py stats` mostra o reaproveitamento real (sem testes e sem HITs falsos), o custo medido por pedido, o custo por pesquisa arquivada e a economia medida. Ele só conta tokens de subagente: a sessão principal não é medida. Revise a cada semana; se o reaproveitamento real for baixo, as palavras-chave ou tags estão ruins.
 - Testes: passe `--teste` depois do subcomando (ou `ESCRITORIO_TESTE=1`), e o evento fica fora do `stats`.
-- `acervo.py marcar --linha N --como teste|hit-falso|real` corrige a classificação de um evento já registrado (por exemplo, um HIT que a auditoria apontou como falso). Revise a cada semana; se `HIT` for baixo, as palavras-chave ou tags estão ruins.
+- `acervo.py marcar --linha N --como teste|hit-falso|real` corrige a classificação de um evento já registrado (por exemplo, um HIT que a auditoria apontou como falso).
 - `acervo.py reindexar` reconstrói o índice a partir dos `.md` se você editar arquivos à mão.
 - `acervo.py init --andares pesquisa,desenvolvimento` cria a estrutura inicial.
 - Raiz do acervo: `--raiz`, variável `ESCRITORIO_ACERVO` ou `./escritorio/acervo`.
