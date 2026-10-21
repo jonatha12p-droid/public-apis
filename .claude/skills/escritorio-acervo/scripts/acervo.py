@@ -514,6 +514,8 @@ def cmd_pedir(a):
     q = set(tokens(a.pergunta))
     for resp in sorted((esc / de / "respostas").glob("*.md")):
         meta, corpo = ler_frontmatter(resp.read_text(encoding="utf-8"))
+        if valor(meta, "nota") == "descartada":
+            continue  # pesquisa descartada nao responde nada
         ped = esc.parent / meta.get("pedido", "")
         if ped.is_file():
             _, cped = ler_frontmatter(ped.read_text(encoding="utf-8"))
