@@ -16,3 +16,5 @@
 {"ts": "2026-10-21T16:11:06", "evento": "PEDIDO", "de": "redes-sociais", "para": "pesquisa", "arquivo": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md"}
 {"ts": "2026-10-21T16:11:06", "evento": "ROTA_REGRA", "agente": "pesquisador-redes-sociais"}
 {"ts": "2026-10-21T16:11:06", "evento": "MISS", "consulta": "frequência horário posts instagram tiktok alcance", "andar": "*", "alvo": null}
+{"ts": "2026-10-21T16:15:20", "evento": "ARQUIVADO", "id": "pesquisa/frequencia-semanal-e-horarios-de-publicacao-no-instagram-e-n", "substituiu": false}
+{"ts": "2026-10-21T16:15:22", "evento": "RESPONDIDO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "resultado": "MISS", "descartado": false}

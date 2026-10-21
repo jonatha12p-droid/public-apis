@@ -80,3 +80,9 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - A rodada com o leitor de páginas (Sonnet, 83.927 tokens) leu 9 fontes e confirmou os números do Buffer.
 - Curadoria final (20.537 tokens): nota 3, **descartada**. Nenhuma fonte primária segmenta perfis de até 10 mil seguidores, e as recomendações oficiais das plataformas não puderam ser lidas.
 - Custo total da pesquisa: 220.029 tokens, dos quais cerca de 58 mil foram perdidos com a ferramenta.
+
+### Pedido reformulado (v2): arquivado com nota 4
+
+- O novo pedido aceita estudos de vendors como evidência direcional, não exige recorte por tamanho de conta e trata a posição oficial ilegível como lacuna.
+- Custos: pesquisa partindo do rascunho anterior, 76.809 tokens; curadoria, 21.432 (nota 3: só uma fonte para o horário do Instagram); rodada extra, 67.374; curadoria final, 26.746 (nota 4, arquivada). Total do v2: 192.361 tokens.
+- Busca de teste depois do arquivamento: HIT. Auditoria: 0 problemas.

@@ -66,6 +66,45 @@
    ],
    "palavras": 1847,
    "caminho": "pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026.md"
+  },
+  {
+   "id": "pesquisa/frequencia-semanal-e-horarios-de-publicacao-no-instagram-e-n",
+   "andar": "pesquisa",
+   "titulo": "Frequência semanal e horários de publicação no Instagram e no TikTok (2025-2026) e relação com alcance",
+   "tipo": "redes-sociais",
+   "tags": [
+    "instagram",
+    "tiktok",
+    "frequência de postagem",
+    "posting frequency",
+    "melhor horário",
+    "best time to post",
+    "alcance",
+    "views por post",
+    "buffer",
+    "metricool"
+   ],
+   "resumo": "Números de vendors (Buffer, Metricool, Dash, Sprout, Hootsuite), direcionais, não oficiais. Instagram: 3 a 5 posts/semana no feed (Buffer, +12% de alcance); Dash vê pico em 2 a 3 (engajamento). Horário sem consenso: Buffer quarta 12h e 18h e quinta 9h; Sprout quarta 12h-21h; Hootsuite tarde; Metricool 18h-21h. TikTok: 2 a 5 posts/semana (Buffer, até +17% de views por post, ganho no topo); Metricool 2026: views por post -31% com mais volume. Horário: Buffer domingo 9h e segunda 13h; Metricool 18h-21h (pico 20h); divergem. Contas pequenas: sem recorte robusto. Incertezas: posição oficial não lida; fuso e data das páginas do Metricool; sem dados do Brasil.",
+   "criado": "2026-10-21",
+   "validade_dias": 30,
+   "nota": 4,
+   "fontes": [
+    "https://buffer.com/resources/how-often-to-post-on-instagram/",
+    "https://www.dashsocial.com/blog/how-often-should-you-post-on-instagram",
+    "https://metricool.com/how-often-businesses-post-social-media/",
+    "https://buffer.com/resources/how-often-should-you-post-on-tiktok/",
+    "https://metricool.com/tiktok-study-2022/",
+    "https://metricool.com/press-release-tiktok-study-2026/",
+    "https://metricool.com/best-time-post-tiktok/",
+    "https://buffer.com/resources/when-is-the-best-time-to-post-on-instagram/",
+    "https://buffer.com/resources/best-time-to-post-on-tiktok/",
+    "https://www.netinfluencer.com/social-media-saturation-reaches-tipping-point-as-content-volume-outpaces-engagement-study-finds/",
+    "https://sproutsocial.com/insights/best-times-to-post-on-social-media/",
+    "https://metricool.com/best-time-to-post-on-instagram/",
+    "https://blog.hootsuite.com/best-time-to-post-on-instagram/"
+   ],
+   "palavras": 1969,
+   "caminho": "pesquisa/frequencia-semanal-e-horarios-de-publicacao-no-instagram-e-n.md"
   }
  ]
 }
