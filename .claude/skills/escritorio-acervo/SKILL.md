@@ -24,7 +24,7 @@ A economia vem de não repetir trabalho (consulta, roteamento e arquivamento rod
    | Resultado | O que fazer |
    |---|---|
    | `HIT` | Responda com o **resumo**. Abra o arquivo completo (`ler <id> --completo`) só se o resumo não bastar. Custo: poucos mil tokens. |
-   | `PARCIAL` | Parta do resumo e pesquise **só a lacuna** (termos listados em `ACAO`). Use o nível de profundidade normal para a lacuna. |
+   | `PARCIAL` | Parta do resumo e pesquise **só a lacuna** (termos listados em `ACAO`). Use o nível de profundidade normal para a lacuna. Também sai `PARCIAL` quando o assunto só casa com a parte do resumo que a própria pesquisa marca como incerta (linha "Termos que a pesquisa marca como incertos"). |
    | `VENCIDA` | Atualização incremental: leia a pesquisa antiga, pesquise o que mudou desde a data de criação e arquive a nova versão (a antiga vai para `_historico`). |
    | `MISS` | Pesquisa nova, em **nível padrão ou profundo** (próximo passo). |
 
@@ -62,6 +62,7 @@ A economia vem de não repetir trabalho (consulta, roteamento e arquivamento rod
 
 ## Limites honestos
 
+- Frases do resumo com "Incertezas:", "não verificado", "lacuna", "inferência" ou "não testado" não contam para `HIT`. Ao arquivar, ponha as incertezas no fim do resumo, depois de "Incertezas:".
 - A busca é lexical (BM25 + cobertura de termos), não semântica. Funciona bem com tags e títulos bons; sinônimos raros podem gerar `MISS` falso. Compensação: peça tags generosas no arquivamento.
 - Os orçamentos de tokens em `references/politica-pesquisa.md` são **referências**, não limites impostos. Para impor teto de verdade, defina `max_tokens` e número de turnos na chamada do agente.
 - Pesquisa vencida pode estar desatualizada. Respeite a validade.

@@ -134,17 +134,34 @@ def esta_vencida(e, hoje):
 
 
 # --------------------------------------------------------------------- busca
+# Trechos do resumo que a propria pesquisa marca como incertos. Termo da
+# consulta que so aparece neles nao conta para HIT (evita HIT falso).
+MARCAS_INCERTEZA = ("incerteza", "nao verificad", "lacuna", "inferencia", "nao testad")
+
+
+def separar_resumo(resumo):
+    """Divide o resumo em (parte firme, parte incerta) por frase."""
+    firme, incerta, apos_rotulo = [], [], False
+    for frase in re.split(r"(?<=[.;])\s+", resumo):
+        n = norm(frase)
+        if n.lstrip().startswith("incerteza"):
+            apos_rotulo = True
+        (incerta if apos_rotulo or any(m in n for m in MARCAS_INCERTEZA) else firme).append(frase)
+    return " ".join(firme), " ".join(incerta)
+
+
 def pontuar(entradas, consulta, hoje):
     q = set(tokens(consulta))
-    docs = []
+    docs, firmes = [], []
     for e in entradas:
-        toks = (
+        resumo_firme, _ = separar_resumo(e["resumo"])
+        base = (
             tokens(e["titulo"]) * 3
             + tokens(" ".join(e.get("tags", []))) * 3
             + tokens(e.get("tipo", ""))
-            + tokens(e["resumo"])
         )
-        docs.append(toks)
+        docs.append(base + tokens(e["resumo"]))
+        firmes.append(set(base + tokens(resumo_firme)))
     n = len(docs)
     avgdl = (sum(len(d) for d in docs) / n) if n else 1
     df = Counter()
@@ -153,7 +170,7 @@ def pontuar(entradas, consulta, hoje):
             df[t] += 1
     k1, b = 1.5, 0.75
     resultados = []
-    for e, d in zip(entradas, docs):
+    for e, d, firme in zip(entradas, docs, firmes):
         tf = Counter(d)
         dl = len(d) or 1
         score = 0.0
@@ -163,7 +180,9 @@ def pontuar(entradas, consulta, hoje):
                 score += idf * tf[t] * (k1 + 1) / (tf[t] + k1 * (1 - b + b * dl / avgdl))
         casados = sorted(t for t in q if t in tf)
         cov = len(casados) / len(q) if q else 0.0
-        if cov >= LIMIAR_FORTE and len(casados) >= 2:
+        incertos = sorted(t for t in casados if t not in firme)
+        cov_firme = (len(casados) - len(incertos)) / len(q) if q else 0.0
+        if cov >= LIMIAR_FORTE and len(casados) >= 2 and cov_firme >= LIMIAR_FORTE:
             nivel = "forte"
         elif cov >= LIMIAR_PARCIAL and casados:
             nivel = "parcial"
@@ -177,6 +196,7 @@ def pontuar(entradas, consulta, hoje):
                 "bm25": round(score, 2),
                 "fresca": not esta_vencida(e, hoje),
                 "faltam": sorted(q - set(casados)),
+                "incertos": incertos,
             }
         )
     resultados.sort(
@@ -224,6 +244,8 @@ def cmd_buscar(a):
     elif resultado == "PARCIAL":
         faltam = ", ".join(res[0]["faltam"]) or "-"
         print(f"ACAO: pesquise so a lacuna. Termos nao cobertos: {faltam}")
+        if res[0]["incertos"]:
+            print(f"      Termos que a pesquisa marca como incertos: {', '.join(res[0]['incertos'])}")
     else:
         print("ACAO: pesquisa nova (nivel padrao ou profundo; ver references/politica-pesquisa.md).")
 
