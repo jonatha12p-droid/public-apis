@@ -56,7 +56,7 @@ Cuidados antes de usar:
 | Origem | https://github.com/microsoft/playwright-mcp |
 | Versão guardada | commit `ab6d67c` (2026-10-19), pacote `@playwright/mcp` 0.0.83 (ainda abaixo da 1.0), licença Apache-2.0 |
 | O que é | Servidor MCP da Microsoft que deixa o modelo controlar um navegador real (abrir páginas, clicar, preencher formulários, ler a estrutura da página, tirar foto da tela) |
-| O que foi guardado | Tudo, menos `.git`, `.github` e `.azure-pipelines`. O `CLAUDE.md` virou `CLAUDE.md.original` e a pasta `.claude` virou `_claude.original`, para não serem carregados |
+| O que foi guardado | Tudo, menos `.git`, `.github`, `.azure-pipelines` e `tests/` (esta tinha a chave de um certificado de teste autoassinado, pública no repositório de origem e sem valor, que não vale guardar). O `CLAUDE.md` virou `CLAUDE.md.original` e a pasta `.claude` virou `_claude.original`, para não serem carregados |
 | Andares prováveis | pesquisa (ler páginas que o `ler_pagina.py` não lê), desenvolvimento (testar sites e apps) |
 | Análise | **Superficial**: li o README, a lista de opções e de ferramentas e o código próprio. Não rodei nada |
 
