@@ -1,7 +1,7 @@
 ---
 de: marketing
 para: pesquisa
-status: aberto
+status: respondido
 nivel_sugerido: padrao
 palavras: estrategia vendas call fechamento objecao preco
 criado: 2026-10-21
@@ -10,7 +10,8 @@ alvo:
 agente: 
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-21-estrategias-call-vendas-servicos-digitais.md
-tokens_subagentes: 163511
+tokens_subagentes: 344526
+resposta: escritorio/marketing/respostas/2026-10-21-estrategias-call-vendas-servicos-digitais.md
 ---
 # Pergunta
 Que estratégias de call de vendas têm evidência para vender serviços de baixo ticket (sites e landing pages, de centenas a poucos milhares de reais) para profissionais liberais, clínicas e pequenas empresas no Brasil? Foco: ordem entre diagnóstico, demonstração e preço; como apresentar planos e preço; fechamento na primeira call versus follow-up; objeções comuns; limites legais e éticos do que o vendedor pode prometer.
