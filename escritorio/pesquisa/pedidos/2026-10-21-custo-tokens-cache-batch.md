@@ -1,7 +1,7 @@
 ---
 de: desenvolvimento
 para: pesquisa
-status: aberto
+status: respondido
 nivel_sugerido: padrao   # rapida | padrao | profunda
 ---
 # Pergunta

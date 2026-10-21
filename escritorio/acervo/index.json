@@ -1,4 +1,37 @@
 {
  "versao": 1,
- "entradas": []
+ "entradas": [
+  {
+   "id": "pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026",
+   "andar": "pesquisa",
+   "titulo": "Preços de prompt caching e Batch API da Anthropic (out/2026)",
+   "tipo": "tecnologia",
+   "tags": [
+    "prompt caching",
+    "cache de prompt",
+    "Batch API",
+    "Message Batches",
+    "preço",
+    "pricing",
+    "cache TTL",
+    "cache_control",
+    "Anthropic API",
+    "custo de tokens"
+   ],
+   "resumo": "Conclusão: escrita de cache custa 1,25x (TTL 5 min) ou 2x (1 h) do preço base de entrada; leitura, 0,1x (0,05x no Opus 5.5 e Sonnet 5.5; 0,025x no Fable 5.1 e Mythos 5.1). Batch API dá 50% em entrada e saída; os descontos se acumulam com o cache, mas o acerto de cache em batch é best-effort (30% a 98%). Mínimo cacheável varia por modelo (512 a 4.096 tokens). Mudança no prefixo invalida o cache dali em diante. Aplicação: conteúdo estável primeiro; TTL de 1 h só com pausas e 2+ leituras; batch para tarefas sem urgência. Incertezas: regressão do TTL do Claude Code em março/2026 não verificada; peso da leitura na cota de assinatura não verificado.",
+   "criado": "2026-10-21",
+   "validade_dias": 90,
+   "nota": 4,
+   "fontes": [
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "https://platform.claude.com/docs/en/about-claude/pricing",
+    "https://platform.claude.com/docs/en/api/rate-limits",
+    "https://code.claude.com/docs/en/costs",
+    "https://code.claude.com/docs/en/prompt-caching"
+   ],
+   "palavras": 1847,
+   "caminho": "pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026.md"
+  }
+ ]
 }
