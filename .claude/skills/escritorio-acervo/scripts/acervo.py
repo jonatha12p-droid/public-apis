@@ -15,6 +15,7 @@ Comandos:
   listar      lista o que existe no acervo
   reindexar   reconstroi o indice a partir dos arquivos .md
   rotear      escolhe o agente por palavras-chave (sem LLM)
+  auditar     revisa a qualidade do acervo (sem LLM)
   stats       taxa de reaproveitamento e economia estimada
 
 Raiz do acervo: --raiz, ou variavel ESCRITORIO_ACERVO, ou ./escritorio/acervo
@@ -250,7 +251,8 @@ def cmd_buscar(a):
         print("ACAO: pesquisa nova (nivel padrao ou profundo; ver references/politica-pesquisa.md).")
 
     if not a.sem_log:
-        registrar(raiz, resultado, consulta=a.consulta, andar=a.andar or "*")
+        registrar(raiz, resultado, consulta=a.consulta, andar=a.andar or "*",
+                  alvo=res[0]["e"]["id"] if res else None)
 
 
 # ------------------------------------------------------------ ler / listar
@@ -438,6 +440,99 @@ def cmd_rotear(a):
         registrar(raiz, "ROTA_SEM_CANDIDATO")
 
 
+# ------------------------------------------------------------------ auditar
+def cmd_auditar(a):
+    raiz = raiz_de(a)
+    hoje = hoje_de(a)
+    escritorio = Path(a.escritorio) if a.escritorio else raiz.parent
+    ents = carregar_indice(raiz)["entradas"]
+    prob = []  # (quem resolve, id ou arquivo, problema e acao)
+
+    caminhos = set()
+    for e in ents:
+        arq = raiz / e["caminho"]
+        caminhos.add(arq.resolve())
+        if not arq.is_file():
+            prob.append(("script", e["id"], "arquivo sumiu; rode reindexar"))
+            continue
+        fim = valida_ate(e)
+        if hoje > fim:
+            prob.append(("diretor", e["id"], f"vencida em {fim}; renove so se tiver uso recente"))
+        elif (fim - hoje).days <= a.aviso_dias:
+            prob.append(("diretor", e["id"], f"vence em {fim}"))
+        _, corpo = ler_frontmatter(arq.read_text(encoding="utf-8"))
+        _, incerta = separar_resumo(e["resumo"])
+        if "nao verificad" in norm(corpo) and not incerta:
+            prob.append(("curador", e["id"], "corpo tem trechos nao verificados e o resumo nao tem 'Incertezas:'"))
+        if len(e["resumo"]) < 200:
+            prob.append(("curador", e["id"], f"resumo curto ({len(e['resumo'])} caracteres); diga a conclusao"))
+        if len(e.get("tags", [])) < 5:
+            prob.append(("curador", e["id"], f"so {len(e.get('tags', []))} tags; use 5 a 10, em portugues e ingles"))
+        if e.get("nota") is None:
+            prob.append(("curador", e["id"], "sem nota de curadoria"))
+
+    for arq in sorted(raiz.glob("*/*.md")):
+        if not arq.parent.name.startswith("_") and arq.resolve() not in caminhos:
+            prob.append(("script", str(arq), "arquivo fora do indice; rode reindexar"))
+
+    chaves = [(e["id"], set(tokens(e["titulo"] + " " + " ".join(e.get("tags", []))))) for e in ents]
+    for i, (id1, t1) in enumerate(chaves):
+        for id2, t2 in chaves[i + 1:]:
+            jac = len(t1 & t2) / len(t1 | t2) if t1 | t2 else 0
+            if jac >= a.sobreposicao:
+                prob.append(("curador", f"{id1} + {id2}", f"assuntos parecidos (jaccard {jac:.2f}); avalie unir ou separar as tags"))
+
+    for ped in sorted(escritorio.glob("*/pedidos/*.md")):
+        meta, _ = ler_frontmatter(ped.read_text(encoding="utf-8"))
+        if meta.get("status", "aberto").split()[0] != "respondido":
+            dias = (hoje - date.fromtimestamp(ped.stat().st_mtime)).days
+            prob.append(("diretor", str(ped.relative_to(escritorio.parent)), f"pedido aberto ha {dias} dia(s)"))
+
+    log = raiz / "registro.jsonl"
+    eventos = []
+    if log.exists():
+        for linha in log.read_text(encoding="utf-8").splitlines():
+            try:
+                eventos.append(json.loads(linha))
+            except ValueError:
+                continue
+    # so o que veio depois da ultima revisao do curador (auditar --revisado)
+    ultima = max((i for i, ev in enumerate(eventos) if ev.get("evento") == "REVISADO"), default=-1)
+    eventos = eventos[ultima + 1:]
+    for i, ev in enumerate(eventos):
+        if ev.get("evento") != "HIT":
+            continue
+        q = set(tokens(ev.get("consulta", "")))
+        for depois in eventos[i + 1:]:
+            if depois.get("evento") == "ARQUIVADO":
+                alvo = set(tokens(depois.get("id", "").replace("/", " ")))
+                if q and len(q & alvo) / len(q) >= 0.4 and not depois.get("substituiu"):
+                    alvo_hit = ev.get("alvo") or "pesquisa que deu HIT (nao registrada)"
+                    prob.append(("curador", alvo_hit,
+                                 f"possivel HIT falso: '{ev['consulta']}' deu HIT aqui e depois virou {depois['id']}; "
+                                 "marque no resumo o que nao estava coberto ('Incertezas:') ou ajuste as tags"))
+                break
+    rotas = Counter(ev.get("evento") for ev in eventos if str(ev.get("evento", "")).startswith("ROTA_"))
+    total = sum(rotas.values())
+    if total >= 5 and rotas["ROTA_REGRA"] / total < 0.7:
+        prob.append(("script", "roteamento.json",
+                     f"so {rotas['ROTA_REGRA'] / total:.0%} das rotas por regra; acrescente palavras-chave"))
+
+    print(f"AUDITORIA: {len(ents)} pesquisas, {len(prob)} problema(s)")
+    for quem in ("curador", "diretor", "script"):
+        itens = [p for p in prob if p[0] == quem]
+        if itens:
+            print(f"[{quem}]")
+            for _, alvo, msg in itens:
+                print(f"  - {alvo}: {msg}")
+    if a.revisado:
+        registrar(raiz, "REVISADO")
+        print("REVISADO: avisos do registro anteriores a agora nao voltam a aparecer")
+    precisa = any(p[0] == "curador" for p in prob)
+    print("CURADOR: " + ("acione o agente curador-acervo so com os itens [curador]" if precisa
+                         else "nao precisa (nada que exija julgamento)"))
+
+
 # -------------------------------------------------------------------- stats
 def cmd_stats(a):
     raiz = raiz_de(a)
@@ -528,6 +623,13 @@ def main():
     s.add_argument("--minimo", type=int, default=2, help="termos minimos casados")
     s.add_argument("--margem", type=int, default=1, help="vantagem minima sobre o 2o colocado")
     s.set_defaults(f=cmd_rotear)
+
+    s = sp.add_parser("auditar", parents=[comum])
+    s.add_argument("--escritorio", help="pasta dos andares (padrao: pasta acima do acervo)")
+    s.add_argument("--aviso-dias", type=int, default=7, help="avisar o que vence nestes dias")
+    s.add_argument("--sobreposicao", type=float, default=0.5, help="jaccard de titulo+tags para apontar duplicata")
+    s.add_argument("--revisado", action="store_true", help="curador terminou: zera os avisos tirados do registro")
+    s.set_defaults(f=cmd_auditar)
 
     s = sp.add_parser("stats", parents=[comum])
     s.add_argument("--custo-pesquisa", type=int, default=120000, help="tokens medios de uma pesquisa nova")

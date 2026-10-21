@@ -54,6 +54,7 @@ A economia vem de não repetir trabalho (consulta, roteamento e arquivamento rod
 
 ## Manutenção
 
+- `acervo.py auditar` revisa o acervo sem gastar tokens: resumos fracos, poucas tags, incertezas fora do resumo, assuntos repetidos, HITs falsos no registro, pedidos sem resposta e arquivos fora do índice. Se terminar com `CURADOR: acione`, chame o agente `curador-acervo` só com os itens `[curador]`. Os itens `[diretor]` (vencidas, pedidos abertos) e `[script]` (reindexar, roteamento) não precisam dele.
 - `acervo.py vencidas` lista o que precisa de renovação. Renove só o que tem uso recente.
 - `acervo.py stats` mostra taxa de reaproveitamento e economia estimada. Revise a cada semana; se `HIT` for baixo, as palavras-chave ou tags estão ruins.
 - `acervo.py reindexar` reconstrói o índice a partir dos `.md` se você editar arquivos à mão.
