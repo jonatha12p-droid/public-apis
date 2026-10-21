@@ -41,3 +41,7 @@
 {"ts": "2026-10-21T18:16:32", "evento": "MISS", "consulta": "ferramenta ia redes sociais crescer conteudo app", "andar": "*", "alvo": null}
 {"ts": "2026-10-21T18:20:36", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "pesquisa", "tokens": 96698, "agente": "pesquisador-redes-sociais", "modelo": "sonnet"}
 {"ts": "2026-10-21T18:21:41", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "curadoria", "tokens": 23293, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-21T18:25:21", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "rodada", "tokens": 90508, "agente": "pesquisador-redes-sociais", "modelo": "sonnet"}
+{"ts": "2026-10-21T18:26:40", "evento": "ARQUIVADO", "id": "pesquisa/ferramentas-de-ia-em-2026-para-crescer-no-instagram-tiktok-e", "substituiu": false}
+{"ts": "2026-10-21T18:26:44", "evento": "RESPONDIDO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-21T18:26:51", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "curadoria", "tokens": 31131, "agente": "diretor-pesquisa", "modelo": "haiku"}

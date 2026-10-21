@@ -109,3 +109,8 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - Os custos de hoje foram lançados com base nos `subagent_tokens` de cada chamada.
 - Resultado real: **reaproveitamento 0 de 6 buscas**; 838.062 tokens de subagente gastos; 112.057 deles perdidos com falhas de ferramenta; **279.354 tokens por pesquisa arquivada**; economia medida até agora: zero.
 - O `stats` antigo mostrava 57% de reaproveitamento e cerca de 456 mil tokens economizados.
+
+## Pesquisa de ferramentas de IA para redes sociais (2026-10-21)
+
+- Primeiro pedido real usando o fluxo completo e o registro de custo. Arquivada com nota 4 depois de uma rodada extra. Custo: 241.630 tokens (pesquisa 96.698, rodada 90.508, duas curadorias somando 54.424).
+- Defeito encontrado e corrigido no `checar`: ele só contava `[verificado]` escrito exatamente assim e ignorava marcas com ressalva, como `[verificado, 2026-10-21]`. Neste relatório havia 24 verificadas, não 8. As notas provisórias das outras pesquisas não mudaram, exceto a da primeira versão de frequência de posts (descartada), que subiu de 3 para 4. Aquele descarte foi decidido pela curadoria por conteúdo, então continua valendo.

@@ -671,8 +671,10 @@ def cmd_checar(a):
     sem_fonte = [l.strip() for l in bullets
                  if not l[0].isspace() and not re.search(r"\[\d+", l) and "interpreta" not in norm(l)]
     num_nao_verif = [l.strip() for l in bullets if re.search(r"\d", l) and "nao verificad" in norm(l)]
-    verif = len(re.findall(r"\[verificado\]", corpo, re.I))
-    nao_verif = len(re.findall(r"\[n[aã]o verificado\]", corpo, re.I))
+    # marcas com ressalva contam: "[verificado, 2026-10-21]", "[verificado a lista; precisao nao verificada]"
+    marcas = [norm(m) for m in re.findall(r"\[((?:n[aã]o )?verificad[^\]]*)\]", corpo, re.I)]
+    verif = sum(1 for m in marcas if m.startswith("verificad"))
+    nao_verif = sum(1 for m in marcas if m.startswith("nao verificad") or "nao verificad" in m[len("verificad"):])
     minimo = MINIMO_FONTES.get(a.nivel, 8)
 
     itens = [
