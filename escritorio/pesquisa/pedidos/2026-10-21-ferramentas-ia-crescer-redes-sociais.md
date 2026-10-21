@@ -10,6 +10,7 @@ alvo:
 agente: pesquisador-redes-sociais
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-21-ferramentas-ia-crescer-redes-sociais.md
+tokens_subagentes: 119991
 ---
 # Pergunta
 Quais são as principais ferramentas de IA em 2026 para crescer nas redes sociais (Instagram, TikTok, YouTube), por categoria: ideias e roteiro, edição de vídeo e cortes, imagens e design, legendas e textos, agendamento e análise? Para cada uma: o que faz, preço e plano gratuito, se funciona em português e limitações.

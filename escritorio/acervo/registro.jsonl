@@ -39,3 +39,5 @@
 {"ts": "2026-10-21T18:16:32", "evento": "PEDIDO", "de": "redes-sociais", "para": "pesquisa", "arquivo": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md"}
 {"ts": "2026-10-21T18:16:32", "evento": "ROTA_REGRA", "agente": "pesquisador-redes-sociais"}
 {"ts": "2026-10-21T18:16:32", "evento": "MISS", "consulta": "ferramenta ia redes sociais crescer conteudo app", "andar": "*", "alvo": null}
+{"ts": "2026-10-21T18:20:36", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "pesquisa", "tokens": 96698, "agente": "pesquisador-redes-sociais", "modelo": "sonnet"}
+{"ts": "2026-10-21T18:21:41", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "curadoria", "tokens": 23293, "agente": "diretor-pesquisa", "modelo": "haiku"}
