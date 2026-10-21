@@ -72,3 +72,11 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - **A pesquisa não foi arquivada.** A política de rede do ambiente bloqueia os sites das fontes (buffer.com, metricool.com, tiktok.com e about.instagram.com recebem 403 do gateway), então o pesquisador só viu resumos de busca.
 - O `checar` original teria dado nota 4. Acrescentei o desconto "mais [não verificado] que [verificado]", e com ele a nota caiu para 3. As duas pesquisas antigas continuam com nota 4.
 - O pedido segue aberto, com as lacunas registradas, até a rede ser liberada.
+
+### Rodadas extras com a rede liberada
+
+- O WebFetch continuou com erro de DNS mesmo com a rede liberada, enquanto o `curl` chegava aos sites. Por isso foi criado o `scripts/ler_pagina.py`.
+- Duas rodadas não leram nada: 26.570 e 31.290 tokens. A segunda falhou porque a mudança de ferramentas do agente só passa a valer numa sessão nova.
+- A rodada com o leitor de páginas (Sonnet, 83.927 tokens) leu 9 fontes e confirmou os números do Buffer.
+- Curadoria final (20.537 tokens): nota 3, **descartada**. Nenhuma fonte primária segmenta perfis de até 10 mil seguidores, e as recomendações oficiais das plataformas não puderam ser lidas.
+- Custo total da pesquisa: 220.029 tokens, dos quais cerca de 58 mil foram perdidos com a ferramenta.
