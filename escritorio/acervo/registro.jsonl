@@ -3,3 +3,4 @@
 {"ts": "2026-10-21T13:52:21", "evento": "ARQUIVADO", "id": "pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026", "substituiu": false}
 {"ts": "2026-10-21T13:52:52", "evento": "ROTA_REGRA", "agente": "pesquisador-tecnico"}
 {"ts": "2026-10-21T13:52:52", "evento": "HIT", "consulta": "prompt caching batch api preço anthropic ttl cache", "andar": "*"}
+{"ts": "2026-10-21T14:18:12", "evento": "HIT", "consulta": "claude code assinatura api custo cota", "andar": "*"}

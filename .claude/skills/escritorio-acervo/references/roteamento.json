@@ -44,7 +44,15 @@
         "llm",
         "sdk",
         "infraestrutura",
-        "infrastructure"
+        "infrastructure",
+        "ia",
+        "inteligência artificial",
+        "ai",
+        "claude",
+        "gpt",
+        "gemini",
+        "automação",
+        "automation"
       ]
     },
     {
@@ -80,6 +88,52 @@
         "law",
         "regulation",
         "license"
+      ]
+    },
+    {
+      "nome": "pesquisador-redes-sociais",
+      "andar": "pesquisa",
+      "palavras": [
+        "rede social",
+        "redes sociais",
+        "instagram",
+        "tiktok",
+        "youtube",
+        "linkedin",
+        "facebook",
+        "whatsapp",
+        "reels",
+        "post",
+        "engajamento",
+        "algoritmo",
+        "influenciador",
+        "criador",
+        "social media",
+        "engagement",
+        "creator",
+        "hashtag"
+      ]
+    },
+    {
+      "nome": "pesquisador-ferramentas",
+      "andar": "pesquisa",
+      "palavras": [
+        "programa",
+        "aplicativo",
+        "app",
+        "ferramenta",
+        "software",
+        "plataforma",
+        "plugin",
+        "extensão",
+        "alternativa",
+        "utilidade",
+        "serve",
+        "lançamento",
+        "tool",
+        "alternative",
+        "extension",
+        "saas"
       ]
     }
   ]

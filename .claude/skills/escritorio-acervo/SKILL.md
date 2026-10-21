@@ -39,7 +39,7 @@ A economia vem de não repetir trabalho (consulta, roteamento e arquivamento rod
      --titulo "..." --tipo mercado --tags "a,b,c" --resumo "..." \
      --fontes "url1 | url2" --nota 4
    ```
-   Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, legislacao 60d, tecnologia 90d, conceito e pesquisa-academica 365d. Use `--validade-dias` para exceções.
+   Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-sociais 30d, legislacao 60d, ferramenta 60d, tecnologia 90d, conceito e pesquisa-academica 365d. Use `--validade-dias` para exceções.
 7. **Entregar ao andar solicitante** o **resumo + caminho do arquivo**, nunca o texto completo. Quem precisar de detalhe abre o arquivo.
 
 ## Regras de economia (sem perder qualidade)
