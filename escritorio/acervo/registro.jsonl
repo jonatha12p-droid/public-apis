@@ -9,3 +9,6 @@
 {"ts": "2026-10-21T14:22:30", "evento": "HIT", "consulta": "cache prompt cota assinatura batch", "andar": "*"}
 {"ts": "2026-10-21T14:25:34", "evento": "ARQUIVADO", "id": "pesquisa/cache-de-prompt-na-cota-de-assinatura-pro-max-do-claude-code", "substituiu": false}
 {"ts": "2026-10-21T15:11:37", "evento": "REVISADO"}
+{"ts": "2026-10-21T15:32:55", "evento": "PEDIDO", "de": "redes-sociais", "para": "pesquisa", "arquivo": "2026-10-21-frequencia-posts-instagram-tiktok.md"}
+{"ts": "2026-10-21T15:32:55", "evento": "ROTA_REGRA", "agente": "pesquisador-redes-sociais"}
+{"ts": "2026-10-21T15:32:55", "evento": "MISS", "consulta": "frequência posts instagram tiktok perfil pequeno alcance", "andar": "*", "alvo": null}

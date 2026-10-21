@@ -15,6 +15,10 @@ Comandos:
   listar      lista o que existe no acervo
   reindexar   reconstroi o indice a partir dos arquivos .md
   rotear      escolhe o agente por palavras-chave (sem LLM)
+  pedir       grava um pedido de um andar para outro
+  triar       roteia + busca um pedido e monta a decisao (no HIT ja responde)
+  responder   grava a resposta no andar de origem e fecha o pedido
+  checar      checklist mecanico de curadoria de um relatorio
   auditar     revisa a qualidade do acervo (sem LLM)
   stats       taxa de reaproveitamento e economia estimada
 
@@ -207,6 +211,15 @@ def pontuar(entradas, consulta, hoje):
     return resultados
 
 
+def classificar(res):
+    if not res:
+        return "MISS"
+    r0 = res[0]
+    if r0["nivel"] == "forte":
+        return "HIT" if r0["fresca"] else "VENCIDA"
+    return "PARCIAL"
+
+
 def cmd_buscar(a):
     raiz = raiz_de(a)
     hoje = hoje_de(a)
@@ -217,17 +230,7 @@ def cmd_buscar(a):
     if a.tipo:
         entradas = [e for e in entradas if e.get("tipo") == a.tipo]
     res = pontuar(entradas, a.consulta, hoje)[: a.top]
-
-    if not res:
-        resultado = "MISS"
-    else:
-        r0 = res[0]
-        if r0["nivel"] == "forte" and r0["fresca"]:
-            resultado = "HIT"
-        elif r0["nivel"] == "forte":
-            resultado = "VENCIDA"
-        else:
-            resultado = "PARCIAL"
+    resultado = classificar(res)
 
     print(f"RESULTADO: {resultado}")
     for i, r in enumerate(res, 1):
@@ -412,10 +415,12 @@ def cmd_init(a):
 
 
 # ------------------------------------------------------------------- rotear
-def cmd_rotear(a):
-    raiz = raiz_de(a)
-    tabela = json.loads(Path(a.tabela).read_text(encoding="utf-8"))
-    q = set(tokens(a.pedido))
+TABELA_PADRAO = Path(__file__).resolve().parent.parent / "references" / "roteamento.json"
+
+
+def avaliar_rota(tabela, texto, minimo=2, margem=1):
+    """Devolve ("ROTA", [melhor]) ou ("AMBIGUO", ate 3 candidatos) ou ("SEM_CANDIDATO", [])."""
+    q = set(tokens(texto))
     pont = []
     for ag in tabela["agentes"]:
         palavras = {t for p in ag.get("palavras", []) for t in tokens(p)}
@@ -424,11 +429,21 @@ def cmd_rotear(a):
     pont.sort(key=lambda x: (-x[0], x[1]))
     melhor = pont[0] if pont else None
     segundo = pont[1] if len(pont) > 1 else None
-    if melhor and melhor[0] >= a.minimo and (segundo is None or melhor[0] - segundo[0] >= a.margem):
+    if melhor and melhor[0] >= minimo and (segundo is None or melhor[0] - segundo[0] >= margem):
+        return "ROTA", [melhor]
+    candidatos = [p for p in pont if p[0] > 0][:3]
+    return ("AMBIGUO" if candidatos else "SEM_CANDIDATO"), candidatos
+
+
+def cmd_rotear(a):
+    raiz = raiz_de(a)
+    tabela = json.loads(Path(a.tabela).read_text(encoding="utf-8"))
+    tipo, candidatos = avaliar_rota(tabela, a.pedido, a.minimo, a.margem)
+    if tipo == "ROTA":
+        melhor = candidatos[0]
         print(f"ROTA: {melhor[1]}  (andar {melhor[2]}; termos: {', '.join(melhor[3])})")
         registrar(raiz, "ROTA_REGRA", agente=melhor[1])
         return
-    candidatos = [p for p in pont if p[0] > 0][:3]
     if candidatos:
         print("AMBIGUO: decida entre os candidatos abaixo (use o modelo menor, so com este trecho)")
         for c in candidatos:
@@ -438,6 +453,241 @@ def cmd_rotear(a):
         padrao = tabela.get("padrao", "")
         print(f"SEM_CANDIDATO: use o agente padrao '{padrao}' ou pergunte ao solicitante")
         registrar(raiz, "ROTA_SEM_CANDIDATO")
+
+
+# ------------------------------------------- pedidos entre andares (sem LLM)
+NIVEIS = ["rapida", "padrao", "profunda"]
+MINIMO_FONTES = {"rapida": 3, "padrao": 8, "profunda": 15}
+
+
+def escritorio_de(a):
+    return Path(a.escritorio) if getattr(a, "escritorio", None) else raiz_de(a).parent
+
+
+def secoes(corpo):
+    """Mapa titulo normalizado -> texto. Titulos '#' e '##' abrem secao; '###' fica dentro."""
+    out, atual = {}, None
+    for linha in corpo.splitlines():
+        m = re.match(r"^#{1,2}\s+(.*)", linha)
+        if m:
+            atual = norm(m.group(1)).strip()
+            out[atual] = []
+        elif atual is not None:
+            out[atual].append(linha)
+    return {k: "\n".join(v).strip() for k, v in out.items()}
+
+
+def secao(mapa, *nomes):
+    for k, v in mapa.items():
+        if any(k.startswith(n) for n in nomes):
+            return v
+    return ""
+
+
+def atualizar_frontmatter(arq, **campos):
+    texto = arq.read_text(encoding="utf-8")
+    m = re.match(r"^---\n(.*?)\n---\n?", texto, re.S)
+    linhas = m.group(1).splitlines() if m else []
+    resto = texto[m.end():] if m else texto
+    for k, v in campos.items():
+        nova = f"{k}: {v}"
+        for i, l in enumerate(linhas):
+            if l.split(":", 1)[0].strip() == k:
+                linhas[i] = nova
+                break
+        else:
+            linhas.append(nova)
+    arq.write_text("---\n" + "\n".join(linhas) + "\n---\n" + resto.lstrip("\n"), encoding="utf-8")
+
+
+def valor(meta, k, padrao=""):
+    return (meta.get(k) or padrao).split("#")[0].strip()
+
+
+def cmd_pedir(a):
+    esc = escritorio_de(a)
+    hoje = hoje_de(a)
+    de, para = slugify(a.de), slugify(a.para)
+    if a.nivel not in NIVEIS:
+        sys.exit(f"nivel deve ser um de: {', '.join(NIVEIS)}")
+    slug = slugify(a.titulo or a.palavras or a.pergunta)[:50].strip("-")
+    q = set(tokens(a.pergunta))
+    for resp in sorted((esc / de / "respostas").glob("*.md")):
+        meta, corpo = ler_frontmatter(resp.read_text(encoding="utf-8"))
+        ped = esc.parent / meta.get("pedido", "")
+        if ped.is_file():
+            _, cped = ler_frontmatter(ped.read_text(encoding="utf-8"))
+            antiga = set(tokens(secao(secoes(cped), "pergunta")))
+            if q and antiga and len(q & antiga) / len(q | antiga) >= 0.6:
+                print(f"JA_RESPONDIDO: {resp.relative_to(esc.parent)}  (pergunta parecida; use essa resposta ou passe --forcar)")
+                if not a.forcar:
+                    return
+    pasta = esc / para / "pedidos"
+    pasta.mkdir(parents=True, exist_ok=True)
+    arq = pasta / f"{hoje.isoformat()}-{slug}.md"
+    n = 2
+    while arq.exists():
+        arq = pasta / f"{hoje.isoformat()}-{slug}-{n}.md"
+        n += 1
+    criterios = "\n".join(f"- {c}" for c in a.criterio) or "- <defina o criterio>"
+    arq.write_text(
+        f"---\nde: {de}\npara: {para}\nstatus: aberto\nnivel_sugerido: {a.nivel}\n"
+        f"palavras: {a.palavras or ''}\ncriado: {hoje.isoformat()}\n---\n"
+        f"# Pergunta\n{a.pergunta}\n\n# Para que serve\n{a.para_que or '-'}\n\n# Respondida quando\n{criterios}\n",
+        encoding="utf-8",
+    )
+    registrar(raiz_de(a), "PEDIDO", de=de, para=para, arquivo=arq.name)
+    print(f"PEDIDO: {arq.relative_to(esc.parent)}")
+    print(f"PROXIMO: acervo.py triar {arq.relative_to(esc.parent)}")
+
+
+def cmd_triar(a):
+    raiz, hoje = raiz_de(a), hoje_de(a)
+    ped = Path(a.pedido)
+    if not ped.is_file():
+        sys.exit(f"pedido nao encontrado: {ped}")
+    meta, corpo = ler_frontmatter(ped.read_text(encoding="utf-8"))
+    mapa = secoes(corpo)
+    pergunta = secao(mapa, "pergunta")
+    consulta = a.consulta or valor(meta, "palavras") or pergunta
+    sugerido = valor(meta, "nivel_sugerido", "padrao")
+    sugerido = sugerido if sugerido in NIVEIS else "padrao"
+
+    tabela = json.loads(Path(a.tabela).read_text(encoding="utf-8"))
+    rota, cands = avaliar_rota(tabela, consulta + " " + pergunta, a.minimo, a.margem)
+    registrar(raiz, {"ROTA": "ROTA_REGRA", "AMBIGUO": "ROTA_AMBIGUA"}.get(rota, "ROTA_SEM_CANDIDATO"),
+              agente=cands[0][1] if rota == "ROTA" else None)
+    if rota == "ROTA":
+        agente = cands[0][1]
+    elif rota == "AMBIGUO":
+        agente = "ESCOLHA entre " + " | ".join(f"{c[1]} ({', '.join(c[3])})" for c in cands)
+    else:
+        agente = tabela.get("padrao", "")
+
+    res = pontuar(carregar_indice(raiz)["entradas"], consulta, hoje)[:3]
+    resultado = classificar(res)
+    registrar(raiz, resultado, consulta=consulta, andar="*", alvo=res[0]["e"]["id"] if res else None)
+
+    if resultado == "MISS" and sugerido == "rapida" and not a.rapida_ok:
+        nivel, nota_nivel = "padrao", " (subiu de rapida: MISS pede no minimo padrao; use --rapida-ok se for pergunta factual simples)"
+    else:
+        nivel, nota_nivel = sugerido, ""
+    saida = (escritorio_de(a) / "pesquisa" / "rascunhos" / ped.name).relative_to(escritorio_de(a).parent)
+    alvo = res[0]["e"]["id"] if res else ""
+    atualizar_frontmatter(ped, triagem=resultado, alvo=alvo, agente=agente if rota != "AMBIGUO" else "",
+                          nivel=nivel, saida=str(saida))
+
+    print(f"TRIAGEM: {resultado}   (consulta: {consulta})")
+    if res:
+        r0 = res[0]
+        print(f"ACERVO: {alvo}  [{r0['nivel']}|{'fresca' if r0['fresca'] else 'VENCIDA'}] cobertura={r0['cobertura']}")
+        print(f"RESUMO: {r0['e']['resumo']}")
+    if resultado == "HIT":
+        if a.sem_resposta:
+            print(f"PROXIMO: acervo.py responder {ped} --id {alvo}")
+        else:
+            responder(a, ped, alvo)
+        return
+    print("DECISAO:")
+    print(f"  agente: {agente}")
+    print(f"  nivel: {nivel}{nota_nivel}")
+    if resultado == "PARCIAL":
+        print(f"  escopo: so a lacuna; termos nao cobertos: {', '.join(res[0]['faltam']) or '-'}"
+              + (f"; incertos na pesquisa existente: {', '.join(res[0]['incertos'])}" if res[0]["incertos"] else ""))
+        print(f"  base: {alvo} (nao repetir o que ela ja cobre)")
+    elif resultado == "VENCIDA":
+        print(f"  escopo: atualizacao incremental desde {res[0]['e']['criado']}; base: {alvo}")
+    else:
+        print("  escopo: pesquisa nova completa")
+    print(f"  pergunta: {' '.join(pergunta.split())}")
+    print("  respondida quando:")
+    for linha in secao(mapa, "respondida").splitlines():
+        if linha.strip():
+            print(f"    {linha.strip()}")
+    print(f"  saida: {saida}")
+    print(f"PROXIMO: acione o agente com este bloco; depois acervo.py checar {saida} --nivel {nivel}")
+
+
+def responder(a, ped, ident=None, motivo=None):
+    raiz, hoje, esc = raiz_de(a), hoje_de(a), escritorio_de(a)
+    meta, _ = ler_frontmatter(ped.read_text(encoding="utf-8"))
+    origem = slugify(valor(meta, "de", "pesquisa"))
+    destino = esc / origem / "respostas" / ped.name
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    resultado = valor(meta, "triagem", "-")
+    if motivo:
+        corpo = f"# Resposta: pesquisa descartada\n\n## Motivo\n{motivo}\n"
+        cab = {"resultado": resultado, "nota": "descartada"}
+    else:
+        e = achar(carregar_indice(raiz), ident)
+        if not e:
+            sys.exit(f"nao encontrei '{ident}' no acervo")
+        corpo = (f"# Resposta: {e['titulo']}\n\n## Resumo\n{e['resumo']}\n\n## Caminho no acervo\n"
+                 f"{(raiz / e['caminho'])}  (valido ate {valida_ate(e)})\n")
+        cab = {"resultado": resultado, "nota": e.get("nota") or "-", "acervo": e["id"]}
+    linhas = [f"pedido: {ped}", "de: pesquisa", f"para: {origem}"] + [f"{k}: {v}" for k, v in cab.items()] + [f"data: {hoje.isoformat()}"]
+    destino.write_text("---\n" + "\n".join(linhas) + "\n---\n" + corpo, encoding="utf-8")
+    atualizar_frontmatter(ped, status="respondido", resposta=str(destino))
+    registrar(raiz, "RESPONDIDO", pedido=ped.name, resultado=resultado, descartado=bool(motivo))
+    print(f"RESPONDIDO: {destino}  (pedido marcado como respondido)")
+
+
+def cmd_responder(a):
+    ped = Path(a.pedido)
+    if not ped.is_file():
+        sys.exit(f"pedido nao encontrado: {ped}")
+    if bool(a.id) == bool(a.descartar):
+        sys.exit("passe --id <pesquisa arquivada> ou --descartar \"motivo\" (um dos dois)")
+    responder(a, ped, a.id, a.descartar)
+
+
+def cmd_checar(a):
+    arq = Path(a.relatorio)
+    if not arq.is_file():
+        sys.exit(f"relatorio nao encontrado: {arq}")
+    _, corpo = ler_frontmatter(arq.read_text(encoding="utf-8"))
+    mapa = secoes(corpo)
+    achados = secao(mapa, "achado")
+    contra = secao(mapa, "contraponto", "critica", "limitac")
+    incert = secao(mapa, "incerteza", "lacuna")
+    fontes = secao(mapa, "fonte", "referencia")
+    angulos = len(re.findall(r"^###\s+", achados, re.M))
+    entradas = [l for l in fontes.splitlines() if re.match(r"^\s*(\[\d+\]|[-*]|\d+\.)\s+\S", l)]
+    urls = {u.rstrip(".,;") for l in entradas for u in re.findall(r"https?://[^\s)>\]]+", l)}
+    dominios = {re.sub(r"^www\.", "", u.split("/")[2]) for u in urls}
+    primarias = [l for l in entradas if re.search(r"primari|oficial", norm(l))]
+    com_data = [l for l in entradas if re.search(r"\b(19|20)\d\d\b", l)]
+    bullets = [l for l in achados.splitlines() if re.match(r"^\s*[-*]\s+\S", l)]
+    # sub-itens herdam a citacao do item de cima; interpretacao declarada nao precisa de fonte
+    sem_fonte = [l.strip() for l in bullets
+                 if not l[0].isspace() and not re.search(r"\[\d+", l) and "interpreta" not in norm(l)]
+    num_nao_verif = [l.strip() for l in bullets if re.search(r"\d", l) and "nao verificad" in norm(l)]
+    verif = len(re.findall(r"\[verificado\]", corpo, re.I))
+    nao_verif = len(re.findall(r"\[n[aã]o verificado\]", corpo, re.I))
+    minimo = MINIMO_FONTES.get(a.nivel, 8)
+
+    itens = [
+        ("3+ angulos em Achados (### )", angulos >= 3, f"{angulos} angulos"),
+        (f"{minimo}+ fontes distintas", len(entradas) >= minimo, f"{len(entradas)} fontes listadas, {len(dominios)} dominios"),
+        ("fontes primarias", bool(primarias), f"{len(primarias)} marcadas como primaria/oficial"),
+        ("contraponto ou limitacoes", len(contra) >= 80, f"{len(contra)} caracteres"),
+        ("incertezas e datas das fontes", len(incert) >= 40 and len(com_data) >= len(entradas) / 2 > 0,
+         f"secao {len(incert)} caracteres; {len(com_data)}/{len(entradas)} fontes com ano"),
+    ]
+    pontos = sum(ok for _, ok, _ in itens)
+    ajuste = -1 if (sem_fonte or num_nao_verif) else 0
+    print(f"CHECAGEM: {arq}  (nivel {a.nivel})")
+    for nome, ok, det in itens:
+        print(f"  [{'x' if ok else ' '}] {nome}: {det}")
+    print(f"  marcas: {verif} [verificado], {nao_verif} [nao verificado]")
+    if sem_fonte:
+        print(f"  ajuste -1: {len(sem_fonte)} item(ns) de Achados sem citacao [n], ex.: {sem_fonte[0][:100]}")
+    if num_nao_verif:
+        print(f"  ajuste -1: {len(num_nao_verif)} numero(s) marcados como nao verificados, ex.: {num_nao_verif[0][:100]}")
+    nota = max(1, pontos + ajuste)
+    print(f"NOTA_PROVISORIA: {nota}  ({pontos} itens {'- 1 de ajuste' if ajuste else 'sem ajuste'})")
+    print("PARA_JULGAR (o script nao ve): profundidade real de cada angulo; se as afirmacoes centrais tem 2+ "
+          "fontes independentes; se as fontes primarias existem de fato. Confirme ou corrija a nota.")
 
 
 # ------------------------------------------------------------------ auditar
@@ -623,6 +873,42 @@ def main():
     s.add_argument("--minimo", type=int, default=2, help="termos minimos casados")
     s.add_argument("--margem", type=int, default=1, help="vantagem minima sobre o 2o colocado")
     s.set_defaults(f=cmd_rotear)
+
+    s = sp.add_parser("pedir", parents=[comum])
+    s.add_argument("--de", required=True, help="andar que pede")
+    s.add_argument("--para", default="pesquisa")
+    s.add_argument("--pergunta", required=True)
+    s.add_argument("--para-que", help="decisao que depende da resposta")
+    s.add_argument("--criterio", action="append", default=[], help="criterio de respondida (repita)")
+    s.add_argument("--palavras", help="3 a 6 palavras-chave para a busca no acervo")
+    s.add_argument("--titulo", help="nome curto para o arquivo")
+    s.add_argument("--nivel", default="padrao", help="rapida | padrao | profunda")
+    s.add_argument("--escritorio", help="pasta dos andares (padrao: pasta acima do acervo)")
+    s.add_argument("--forcar", action="store_true", help="grava mesmo com resposta parecida")
+    s.set_defaults(f=cmd_pedir)
+
+    s = sp.add_parser("triar", parents=[comum])
+    s.add_argument("pedido")
+    s.add_argument("--consulta", help="palavras para a busca (padrao: campo palavras do pedido)")
+    s.add_argument("--tabela", default=str(TABELA_PADRAO))
+    s.add_argument("--minimo", type=int, default=2)
+    s.add_argument("--margem", type=int, default=1)
+    s.add_argument("--rapida-ok", action="store_true", help="aceita nivel rapida num MISS")
+    s.add_argument("--sem-resposta", action="store_true", help="no HIT, nao grava a resposta sozinho")
+    s.add_argument("--escritorio")
+    s.set_defaults(f=cmd_triar)
+
+    s = sp.add_parser("responder", parents=[comum])
+    s.add_argument("pedido")
+    s.add_argument("--id", help="pesquisa do acervo que responde o pedido")
+    s.add_argument("--descartar", help="motivo, quando a pesquisa foi descartada")
+    s.add_argument("--escritorio")
+    s.set_defaults(f=cmd_responder)
+
+    s = sp.add_parser("checar", parents=[comum])
+    s.add_argument("relatorio")
+    s.add_argument("--nivel", default="padrao", help="rapida | padrao | profunda")
+    s.set_defaults(f=cmd_checar)
 
     s = sp.add_parser("auditar", parents=[comum])
     s.add_argument("--escritorio", help="pasta dos andares (padrao: pasta acima do acervo)")

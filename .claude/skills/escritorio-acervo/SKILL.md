@@ -1,6 +1,6 @@
 ---
 name: escritorio-acervo
-description: Use quando um diretor de andar do escritório virtual recebe um pedido de pesquisa (de outro andar ou do usuário), antes de acionar qualquer agente pesquisador. Consulta o acervo local para reaproveitar pesquisas existentes, roteia o pedido ao agente certo, define a profundidade da pesquisa nova, faz a curadoria e arquiva o resultado. Também use para arquivar, buscar, listar ou renovar pesquisas vencidas.
+description: Use antes de qualquer pesquisa do escritório virtual (pedido de um andar ou do usuário), antes de acionar qualquer agente pesquisador. Consulta o acervo local para reaproveitar pesquisas existentes, roteia o pedido ao agente certo, define a profundidade da pesquisa nova, faz a curadoria e arquiva o resultado. Também use para arquivar, buscar, listar ou renovar pesquisas vencidas.
 ---
 
 # Escritório Acervo
@@ -11,36 +11,23 @@ A economia vem de não repetir trabalho (consulta, roteamento e arquivamento rod
 
 ## Fluxo
 
-1. **Entender o pedido.** Reescreva em uma linha e extraia de 3 a 6 palavras-chave.
-2. **Rotear.** Rode o roteador por regras (sem LLM):
-   `python scripts/acervo.py rotear "<pedido>" --tabela references/roteamento.json`
-   - `ROTA:` use o agente indicado.
-   - `AMBIGUO:` decida só entre os candidatos listados (modelo menor basta).
-   - `SEM_CANDIDATO:` use o agente padrão ou pergunte ao solicitante.
-3. **Consultar o acervo antes de pesquisar.**
-   `python scripts/acervo.py buscar "<pedido em poucas palavras>"`
-   Use `--andar` para limitar a um andar. Leia o campo `RESULTADO`:
+Quem orquestra é a sessão principal. Só a pesquisa e o julgamento da curadoria usam agente; o resto é script. `A` = `python3 .claude/skills/escritorio-acervo/scripts/acervo.py`, rodado da raiz do projeto.
 
-   | Resultado | O que fazer |
-   |---|---|
-   | `HIT` | Responda com o **resumo**. Abra o arquivo completo (`ler <id> --completo`) só se o resumo não bastar. Custo: poucos mil tokens. |
-   | `PARCIAL` | Parta do resumo e pesquise **só a lacuna** (termos listados em `ACAO`). Use o nível de profundidade normal para a lacuna. Também sai `PARCIAL` quando o assunto só casa com a parte do resumo que a própria pesquisa marca como incerta (linha "Termos que a pesquisa marca como incertos"). |
-   | `VENCIDA` | Atualização incremental: leia a pesquisa antiga, pesquise o que mudou desde a data de criação e arquive a nova versão (a antiga vai para `_historico`). |
-   | `MISS` | Pesquisa nova, em **nível padrão ou profundo** (próximo passo). |
+1. **Pedir.** Escreva a pergunta em 1 a 3 linhas e de 3 a 6 palavras-chave:
+   `A pedir --de <andar> --pergunta "..." --palavras "a b c" --criterio "..." --criterio "..." [--para-que "..."] [--nivel padrao]`
+   Se sair `JA_RESPONDIDO`, use a resposta existente.
+2. **Triar** (rotear + buscar, sem LLM): `A triar <pedido>`
+   - `HIT`: o script já grava a resposta no andar de origem. Fim.
+   - `PARCIAL` / `VENCIDA` / `MISS`: sai um bloco `DECISAO` (agente, nível, escopo, pergunta, critérios, caminho de saída). Se o agente vier como `ESCOLHA entre ...`, escolha um dos listados.
+3. **Pesquisar.** Acione o agente pesquisador indicado com o bloco `DECISAO`. Nunca baixe o nível para economizar (ver `references/politica-pesquisa.md`).
+4. **Checar** (checklist mecânico): `A checar <relatorio> --nivel <nivel>` dá a `NOTA_PROVISORIA`.
+5. **Curadoria.** Acione o `diretor-pesquisa` com: pedido, relatório, saída do `checar` e a devolução do pesquisador. Ele julga o que o script não vê, confirma ou corrige a nota e:
+   - nota 4 ou 5: arquiva (`A arquivar ...`) e responde (`A responder <pedido> --id <id>`);
+   - nota 3: devolve as lacunas; acione o pesquisador de novo (no máximo 1 rodada extra);
+   - nota 1 ou 2: `A responder <pedido> --descartar "motivo"`.
+6. **Entregar** ao andar solicitante só o resumo + caminho (já está no arquivo de resposta).
 
-4. **Pesquisa nova: não seja raso.** Siga `references/politica-pesquisa.md`. Nível padrão é o mínimo para qualquer MISS que não seja pergunta factual simples. Escolha o nível e diga ao agente pesquisador qual é.
-5. **Curadoria.** Avalie o resultado com o checklist de `references/politica-pesquisa.md` (nota de 1 a 5).
-   - Nota 4 ou 5: arquive.
-   - Nota 3: devolva ao agente com as lacunas específicas (no máximo 1 rodada extra).
-   - Nota 1 ou 2: descarte e registre o motivo.
-6. **Arquivar.** O resumo de até 700 caracteres é escrito pelo modelo menor; o resto é script:
-   ```
-   python scripts/acervo.py arquivar --arquivo <relatorio.md> --andar pesquisa \
-     --titulo "..." --tipo mercado --tags "a,b,c" --resumo "..." \
-     --fontes "url1 | url2" --nota 4
-   ```
-   Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-sociais 30d, legislacao 60d, ferramenta 60d, tecnologia 90d, conceito e pesquisa-academica 365d. Use `--validade-dias` para exceções.
-7. **Entregar ao andar solicitante** o **resumo + caminho do arquivo**, nunca o texto completo. Quem precisar de detalhe abre o arquivo.
+Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-sociais 30d, legislacao 60d, ferramenta 60d, tecnologia 90d, conceito e pesquisa-academica 365d. Use `--validade-dias` no `arquivar` para exceções.
 
 ## Regras de economia (sem perder qualidade)
 
