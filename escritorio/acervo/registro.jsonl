@@ -36,3 +36,6 @@
 {"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "etapa": "curadoria", "tokens": 21432, "nota": "medido em 2026-10-21, lancado depois"}
 {"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "etapa": "rodada", "tokens": 67374, "nota": "medido em 2026-10-21, lancado depois"}
 {"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "etapa": "curadoria", "tokens": 26746, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T18:16:32", "evento": "PEDIDO", "de": "redes-sociais", "para": "pesquisa", "arquivo": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md"}
+{"ts": "2026-10-21T18:16:32", "evento": "ROTA_REGRA", "agente": "pesquisador-redes-sociais"}
+{"ts": "2026-10-21T18:16:32", "evento": "MISS", "consulta": "ferramenta ia redes sociais crescer conteudo app", "andar": "*", "alvo": null}
