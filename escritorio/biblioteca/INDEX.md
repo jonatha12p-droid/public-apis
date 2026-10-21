@@ -48,3 +48,27 @@ Cuidados antes de usar:
 - **Cota:** roda em ciclos de 15 minutos usando a cota da assinatura. O consumo pode ser alto.
 - **Credenciais:** precisa de um `.env` com acesso a e-mail e chaves de serviços. Nunca guardar esse arquivo no repositório.
 - **LinkedIn:** o README avisa que automatizar o LinkedIn viola os termos de uso.
+
+## playwright-mcp
+
+| | |
+|---|---|
+| Origem | https://github.com/microsoft/playwright-mcp |
+| Versão guardada | commit `ab6d67c` (2026-10-19), pacote `@playwright/mcp` 0.0.83 (ainda abaixo da 1.0), licença Apache-2.0 |
+| O que é | Servidor MCP da Microsoft que deixa o modelo controlar um navegador real (abrir páginas, clicar, preencher formulários, ler a estrutura da página, tirar foto da tela) |
+| O que foi guardado | Tudo, menos `.git`, `.github` e `.azure-pipelines`. O `CLAUDE.md` virou `CLAUDE.md.original` e a pasta `.claude` virou `_claude.original`, para não serem carregados |
+| Andares prováveis | pesquisa (ler páginas que o `ler_pagina.py` não lê), desenvolvimento (testar sites e apps) |
+| Análise | **Superficial**: li o README, a lista de opções e de ferramentas e o código próprio. Não rodei nada |
+
+**Este repositório é só uma casca.** O código próprio tem cerca de 50 linhas (`cli.js` e `index.js`). O motor do navegador vem do pacote npm `playwright`, que o `package.json` fixa numa versão alfa (`1.64.0-alpha`). Guardar este instantâneo não dá uso offline: para rodar é preciso baixar as dependências e o navegador.
+
+Por que pode interessar: na pesquisa de redes sociais, o `ler_pagina.py` não conseguiu ler o TikTok Creator Academy, que é montado por JavaScript. Um navegador de verdade resolveria isso. O ambiente na nuvem já tem Chromium e Playwright instalados, mas não testei se funcionaria com o bloqueio de rede.
+
+Ativar (não feito): `claude mcp add playwright -- npx @playwright/mcp@0.0.83 --isolated --headless`. Fixe a versão em vez de `@latest`, para não rodar código novo a cada início de sessão.
+
+Cuidados:
+- **Contexto:** são mais de 45 ferramentas, e a descrição de todas entra no contexto. O README da própria Microsoft diz que, para agentes de código, o Playwright CLI com skills (https://github.com/microsoft/playwright-cli) gasta menos tokens que o MCP. Essa é a afirmação deles, não medi. Como o consumo de tokens é prioridade, vale olhar o CLI antes de ativar o MCP.
+- **Sessões logadas:** a opção `--extension` conecta ao seu Chrome ou Edge em uso, com suas contas abertas, e o perfil padrão guarda cookies no disco. Páginas maliciosas podem tentar induzir o modelo a agir em sites onde você está logado. Use `--isolated`.
+- **Execução de código:** as ferramentas `browser_evaluate` e `browser_run_code_unsafe` rodam código arbitrário na página.
+- **Limites de acesso:** o README avisa que `--allowed-origins` e `--blocked-origins` não são uma barreira de segurança e não valem para redirecionamentos.
+- **Arquivos locais:** o acesso a arquivos fora da pasta do projeto vem desligado, e só o `--allow-unrestricted-file-access` liga. Não ligar.

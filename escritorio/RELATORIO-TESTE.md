@@ -100,3 +100,4 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - Decisão do usuário: guardar skills e projetos externos para uso futuro, sem ativar. Criada `escritorio/biblioteca/` (catálogo em `INDEX.md`).
 - As 11 skills de YouTube saíram de `.claude/skills/` e foram para `escritorio/biblioteca/youtube-agent-skill/`.
 - Harvey (agente de vendas por e-mail frio) guardado inteiro, sem `.git`, `.github` e o GIF de 4,5 MB. O `CLAUDE.md` dele foi renomeado para `CLAUDE.md.original`, para não ser carregado como instrução.
+- Playwright MCP (Microsoft) guardado em `escritorio/biblioteca/playwright-mcp/`, inativo. É uma casca de ~50 linhas sobre o pacote `playwright`; o catálogo (`INDEX.md`) traz os cuidados e a alternativa Playwright CLI.
