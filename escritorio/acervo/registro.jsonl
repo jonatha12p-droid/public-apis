@@ -48,3 +48,5 @@
 {"ts": "2026-10-21T18:43:30", "evento": "PEDIDO", "de": "marketing", "para": "pesquisa", "arquivo": "2026-10-21-estrategias-call-vendas-servicos-digitais.md"}
 {"ts": "2026-10-21T18:43:30", "evento": "ROTA_AMBIGUA", "agente": null}
 {"ts": "2026-10-21T18:43:30", "evento": "MISS", "consulta": "estrategia vendas call fechamento objecao preco", "andar": "*", "alvo": null}
+{"ts": "2026-10-21T18:50:32", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "pesquisa", "tokens": 137929, "agente": "pesquisador-mercado", "modelo": "sonnet"}
+{"ts": "2026-10-21T18:51:52", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "curadoria", "tokens": 25582, "agente": "diretor-pesquisa", "modelo": "haiku"}
