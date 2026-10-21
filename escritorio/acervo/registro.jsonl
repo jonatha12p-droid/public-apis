@@ -7,3 +7,4 @@
 {"ts": "2026-10-21T14:22:16", "evento": "HIT", "consulta": "peso leitura cache cota assinatura claude code limite uso", "andar": "*"}
 {"ts": "2026-10-21T14:22:30", "evento": "ROTA_AMBIGUA"}
 {"ts": "2026-10-21T14:22:30", "evento": "HIT", "consulta": "cache prompt cota assinatura batch", "andar": "*"}
+{"ts": "2026-10-21T14:25:34", "evento": "ARQUIVADO", "id": "pesquisa/cache-de-prompt-na-cota-de-assinatura-pro-max-do-claude-code", "substituiu": false}

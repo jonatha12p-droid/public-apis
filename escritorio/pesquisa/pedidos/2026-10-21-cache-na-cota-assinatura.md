@@ -1,7 +1,7 @@
 ---
 de: pesquisa
 para: pesquisa
-status: aberto
+status: respondido
 nivel_sugerido: padrao   # rapida | padrao | profunda
 tipo_busca: PARCIAL (lacuna de pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026)
 ---

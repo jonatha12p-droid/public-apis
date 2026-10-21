@@ -32,6 +32,40 @@
    ],
    "palavras": 1847,
    "caminho": "pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026.md"
+  },
+  {
+   "id": "pesquisa/cache-de-prompt-na-cota-de-assinatura-pro-max-do-claude-code",
+   "andar": "pesquisa",
+   "titulo": "Cache de prompt na cota de assinatura Pro/Max do Claude Code e como medir o consumo (out/2026)",
+   "tipo": "tecnologia",
+   "tags": [
+    "cota de assinatura",
+    "subscription quota",
+    "Claude Code",
+    "cache read",
+    "cache write",
+    "prompt caching",
+    "/usage",
+    "rate limits 5h weekly",
+    "subagent usage",
+    "OpenTelemetry"
+   ],
+   "resumo": "Não há fonte oficial da Anthropic com o peso de cache read e cache write na cota Pro/Max. Os docs do Claude Code confirmam que cada requisição relê a conversa e que isso consome cota, sem publicar a fórmula. Relatos de usuários divergem (leitura pesa pouco ou cheio); é evidência secundária, sem medição controlada. Para ver o consumo: /usage (barras 5 h e semanal, atribuição a skills e subagentes em 24 h ou 7 dias, só local), status line (rate_limits) e OpenTelemetry (session.id, query_source=subagent; mede tokens, não cota). Separar por sessão é possível por OTel e transcritos; por subagente individual na cota não há visão oficial (inferência). Não testado em sessão real.",
+   "criado": "2026-10-21",
+   "validade_dias": 90,
+   "nota": 4,
+   "fontes": [
+    "https://code.claude.com/docs/en/costs",
+    "https://code.claude.com/docs/en/prompt-caching",
+    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
+    "https://support.claude.com/en/articles/11145838-using-claude-code-with-your-pro-or-max-plan",
+    "https://support.claude.com/en/articles/9797557-usage-limit-best-practices",
+    "https://code.claude.com/docs/en/statusline",
+    "https://code.claude.com/docs/en/sub-agents",
+    "https://code.claude.com/docs/en/monitoring-usage"
+   ],
+   "palavras": 1842,
+   "caminho": "pesquisa/cache-de-prompt-na-cota-de-assinatura-pro-max-do-claude-code.md"
   }
  ]
 }
