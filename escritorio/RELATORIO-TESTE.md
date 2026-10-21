@@ -94,3 +94,9 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - Teste: as 11 skills aparecem na sessão, `/yt-script` carrega e as 6 ferramentas rodam (`hookscore`, `title`, `deadair`, `chapters`, `retention`, `swipe`). `chapters`, `retention` e `swipe` recusam amostras muito pequenas, por desenho.
 - Limitação: o `hookscore.py` usa expressões em inglês. Com ganchos em português ele quase não reconhece fórmula e dá notas quase iguais (34 a 39, todas "WEAK"). Mesmo em inglês, todas ficaram "WEAK" (37 a 46). Serve como comparação relativa de ganchos em inglês, não como nota absoluta.
 - Para escrever roteiros completos, a skill pede `~/.claude/youtube/voice.md`, que ainda não existe.
+
+## Biblioteca de itens guardados (2026-10-21)
+
+- Decisão do usuário: guardar skills e projetos externos para uso futuro, sem ativar. Criada `escritorio/biblioteca/` (catálogo em `INDEX.md`).
+- As 11 skills de YouTube saíram de `.claude/skills/` e foram para `escritorio/biblioteca/youtube-agent-skill/`.
+- Harvey (agente de vendas por e-mail frio) guardado inteiro, sem `.git`, `.github` e o GIF de 4,5 MB. O `CLAUDE.md` dele foi renomeado para `CLAUDE.md.original`, para não ser carregado como instrução.
