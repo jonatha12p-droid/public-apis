@@ -1,0 +1,86 @@
+{
+  "padrao": "pesquisador-tecnico",
+  "agentes": [
+    {
+      "nome": "pesquisador-mercado",
+      "andar": "pesquisa",
+      "palavras": [
+        "mercado",
+        "concorrente",
+        "concorrência",
+        "preço",
+        "precificação",
+        "tendência",
+        "cliente",
+        "público",
+        "market",
+        "competitor",
+        "pricing",
+        "trend"
+      ]
+    },
+    {
+      "nome": "pesquisador-tecnico",
+      "andar": "pesquisa",
+      "palavras": [
+        "biblioteca",
+        "framework",
+        "api",
+        "arquitetura",
+        "token",
+        "modelo",
+        "skill",
+        "agente",
+        "benchmark",
+        "código",
+        "library",
+        "architecture",
+        "agent",
+        "model",
+        "cache",
+        "caching",
+        "batch",
+        "prompt",
+        "llm",
+        "sdk",
+        "infraestrutura",
+        "infrastructure"
+      ]
+    },
+    {
+      "nome": "pesquisador-academico",
+      "andar": "pesquisa",
+      "palavras": [
+        "estudo",
+        "artigo",
+        "paper",
+        "pesquisa científica",
+        "revisão",
+        "evidência",
+        "literatura",
+        "metodologia",
+        "study",
+        "review",
+        "evidence",
+        "literature"
+      ]
+    },
+    {
+      "nome": "pesquisador-legal",
+      "andar": "pesquisa",
+      "palavras": [
+        "lei",
+        "legislação",
+        "regulamento",
+        "norma",
+        "lgpd",
+        "contrato",
+        "licença",
+        "compliance",
+        "law",
+        "regulation",
+        "license"
+      ]
+    }
+  ]
+}
