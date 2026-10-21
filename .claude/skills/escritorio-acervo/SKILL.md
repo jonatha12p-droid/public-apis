@@ -26,6 +26,9 @@ Quem orquestra é a sessão principal. Só a pesquisa e o julgamento da curadori
    - nota 3: devolve as lacunas; acione o pesquisador de novo (no máximo 1 rodada extra);
    - nota 1 ou 2: `A responder <pedido> --descartar "motivo"`.
 6. **Entregar** ao andar solicitante só o resumo + caminho (já está no arquivo de resposta).
+7. **Registrar o custo** de cada subagente acionado, logo depois que ele terminar, com o `subagent_tokens` que a ferramenta Agent relatou:
+   `A custo <pedido> --etapa triagem|pesquisa|rodada|curadoria|falha|hit --tokens N`
+   Use `falha` para rodadas perdidas por problema de ferramenta. Num HIT resolvido só por script, registre `--etapa hit --tokens 0`. Sem isso o `stats` não consegue medir a economia.
 
 Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-sociais 30d, legislacao 60d, ferramenta 60d, tecnologia 90d, conceito e pesquisa-academica 365d. Use `--validade-dias` no `arquivar` para exceções.
 
@@ -43,7 +46,9 @@ Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-socia
 
 - `acervo.py auditar` revisa o acervo sem gastar tokens: resumos fracos, poucas tags, incertezas fora do resumo, assuntos repetidos, HITs falsos no registro, pedidos sem resposta e arquivos fora do índice. Se terminar com `CURADOR: acione`, chame o agente `curador-acervo` só com os itens `[curador]`. Os itens `[diretor]` (vencidas, pedidos abertos) e `[script]` (reindexar, roteamento) não precisam dele.
 - `acervo.py vencidas` lista o que precisa de renovação. Renove só o que tem uso recente.
-- `acervo.py stats` mostra taxa de reaproveitamento e economia estimada. Revise a cada semana; se `HIT` for baixo, as palavras-chave ou tags estão ruins.
+- `acervo.py stats` mostra o reaproveitamento real (sem testes e sem HITs falsos), o custo medido por pedido, o custo por pesquisa arquivada e a economia medida. Ele só conta tokens de subagente: a sessão principal não é medida.
+- Testes: passe `--teste` depois do subcomando (ou `ESCRITORIO_TESTE=1`), e o evento fica fora do `stats`.
+- `acervo.py marcar --linha N --como teste|hit-falso|real` corrige a classificação de um evento já registrado (por exemplo, um HIT que a auditoria apontou como falso). Revise a cada semana; se `HIT` for baixo, as palavras-chave ou tags estão ruins.
 - `acervo.py reindexar` reconstrói o índice a partir dos `.md` se você editar arquivos à mão.
 - `acervo.py init --andares pesquisa,desenvolvimento` cria a estrutura inicial.
 - Raiz do acervo: `--raiz`, variável `ESCRITORIO_ACERVO` ou `./escritorio/acervo`.

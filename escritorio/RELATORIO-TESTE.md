@@ -101,3 +101,11 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - As 11 skills de YouTube saíram de `.claude/skills/` e foram para `escritorio/biblioteca/youtube-agent-skill/`.
 - Harvey (agente de vendas por e-mail frio) guardado inteiro, sem `.git`, `.github` e o GIF de 4,5 MB. O `CLAUDE.md` dele foi renomeado para `CLAUDE.md.original`, para não ser carregado como instrução.
 - Playwright MCP (Microsoft) guardado em `escritorio/biblioteca/playwright-mcp/`, inativo. É uma casca de ~50 linhas sobre o pacote `playwright`; o catálogo (`INDEX.md`) traz os cuidados e a alternativa Playwright CLI.
+
+## Medição real (2026-10-21)
+
+- Comandos novos no `acervo.py`: `custo` registra os tokens de cada etapa de um pedido; `marcar` reclassifica eventos; `--teste` deixa um evento fora do `stats`. O `stats` passou a usar só custos medidos.
+- O registro foi corrigido: a linha 5 era teste, e as linhas 6, 7 e 9 eram HITs falsos (o peso do cache na cota estava marcado como não verificado).
+- Os custos de hoje foram lançados com base nos `subagent_tokens` de cada chamada.
+- Resultado real: **reaproveitamento 0 de 6 buscas**; 838.062 tokens de subagente gastos; 112.057 deles perdidos com falhas de ferramenta; **279.354 tokens por pesquisa arquivada**; economia medida até agora: zero.
+- O `stats` antigo mostrava 57% de reaproveitamento e cerca de 456 mil tokens economizados.

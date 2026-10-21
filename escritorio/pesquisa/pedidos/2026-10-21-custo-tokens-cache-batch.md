@@ -3,6 +3,7 @@ de: desenvolvimento
 para: pesquisa
 status: respondido
 nivel_sugerido: padrao   # rapida | padrao | profunda
+tokens_subagentes: 314111
 ---
 # Pergunta
 Preços atuais da API da Anthropic para prompt caching e Batch API: multiplicadores de leitura/escrita de cache, TTL de 5 min e 1 h, tamanho mínimo de prefixo cacheável, desconto do Batch API, se o desconto de batch combina com cache, e limitações de ambos.

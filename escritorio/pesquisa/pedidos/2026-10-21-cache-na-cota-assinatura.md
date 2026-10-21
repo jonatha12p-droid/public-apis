@@ -4,6 +4,7 @@ para: pesquisa
 status: respondido
 nivel_sugerido: padrao   # rapida | padrao | profunda
 tipo_busca: PARCIAL (lacuna de pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026)
+tokens_subagentes: 111561
 ---
 # Pergunta
 Como a leitura e a escrita de cache de prompt pesam na cota da assinatura do Claude Code (Pro/Max): conta igual a token normal, com desconto, ou não conta? E como medir o consumo de cota por sessão ou por subagente.

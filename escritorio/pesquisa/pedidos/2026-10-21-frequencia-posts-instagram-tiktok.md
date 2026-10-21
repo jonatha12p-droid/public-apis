@@ -11,6 +11,7 @@ agente: pesquisador-redes-sociais
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-21-frequencia-posts-instagram-tiktok.md
 resposta: escritorio/redes-sociais/respostas/2026-10-21-frequencia-posts-instagram-tiktok.md
+tokens_subagentes: 220029
 ---
 # Pergunta
 Qual a frequência e o horário de publicação recomendados em 2026 para perfis pequenos (até 10 mil seguidores) no Instagram e no TikTok, e o que os dados mostram sobre a relação entre frequência e alcance?

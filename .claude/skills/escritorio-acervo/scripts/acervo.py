@@ -20,6 +20,8 @@ Comandos:
   responder   grava a resposta no andar de origem e fecha o pedido
   checar      checklist mecanico de curadoria de um relatorio
   auditar     revisa a qualidade do acervo (sem LLM)
+  custo       registra os tokens reais de uma etapa de um pedido
+  marcar      classifica eventos do registro (teste, hit-falso, real)
   stats       taxa de reaproveitamento e economia estimada
 
 Raiz do acervo: --raiz, ou variavel ESCRITORIO_ACERVO, ou ./escritorio/acervo
@@ -107,11 +109,16 @@ def salvar_indice(raiz, idx):
     tmp.replace(raiz / "index.json")
 
 
+MODO_TESTE = False  # --teste ou ESCRITORIO_TESTE=1: eventos ficam fora do stats
+
+
 def registrar(raiz, evento, **extra):
     try:
         raiz.mkdir(parents=True, exist_ok=True)
         linha = {"ts": datetime.now().isoformat(timespec="seconds"), "evento": evento}
         linha.update(extra)
+        if MODO_TESTE:
+            linha["teste"] = True
         with open(raiz / "registro.jsonl", "a", encoding="utf-8") as f:
             f.write(json.dumps(linha, ensure_ascii=False) + "\n")
     except OSError:
@@ -758,19 +765,11 @@ def cmd_auditar(a):
     # so o que veio depois da ultima revisao do curador (auditar --revisado)
     ultima = max((i for i, ev in enumerate(eventos) if ev.get("evento") == "REVISADO"), default=-1)
     eventos = eventos[ultima + 1:]
-    for i, ev in enumerate(eventos):
-        if ev.get("evento") != "HIT":
-            continue
-        q = set(tokens(ev.get("consulta", "")))
-        for depois in eventos[i + 1:]:
-            if depois.get("evento") == "ARQUIVADO":
-                alvo = set(tokens(depois.get("id", "").replace("/", " ")))
-                if q and len(q & alvo) / len(q) >= 0.4 and not depois.get("substituiu"):
-                    alvo_hit = ev.get("alvo") or "pesquisa que deu HIT (nao registrada)"
-                    prob.append(("curador", alvo_hit,
-                                 f"possivel HIT falso: '{ev['consulta']}' deu HIT aqui e depois virou {depois['id']}; "
-                                 "marque no resumo o que nao estava coberto ('Incertezas:') ou ajuste as tags"))
-                break
+    for _, ev, depois in hits_falsos_provaveis(eventos):
+        alvo_hit = ev.get("alvo") or "pesquisa que deu HIT (nao registrada)"
+        prob.append(("curador", alvo_hit,
+                     f"possivel HIT falso: '{ev['consulta']}' deu HIT aqui e depois virou {depois['id']}; "
+                     "marque no resumo o que nao estava coberto ('Incertezas:') ou ajuste as tags"))
     rotas = Counter(ev.get("evento") for ev in eventos if str(ev.get("evento", "")).startswith("ROTA_"))
     total = sum(rotas.values())
     if total >= 5 and rotas["ROTA_REGRA"] / total < 0.7:
@@ -792,38 +791,157 @@ def cmd_auditar(a):
                          else "nao precisa (nada que exija julgamento)"))
 
 
-# -------------------------------------------------------------------- stats
-def cmd_stats(a):
+# ------------------------------------------------- custo / marcar / stats
+ETAPAS = ["triagem", "pesquisa", "rodada", "curadoria", "falha", "hit", "outro"]
+CLASSES = ["teste", "hit-falso", "real"]
+
+
+def ler_eventos(raiz):
+    log = raiz / "registro.jsonl"
+    eventos = []
+    if log.exists():
+        for linha in log.read_text(encoding="utf-8").splitlines():
+            try:
+                eventos.append(json.loads(linha))
+            except ValueError:
+                eventos.append({"evento": "_ilegivel"})
+    return eventos
+
+
+def eh_teste(ev):
+    return ev.get("teste") is True or ev.get("classe") == "teste"
+
+
+def hits_falsos_provaveis(eventos):
+    """HIT seguido de pesquisa nova arquivada sobre o mesmo assunto: (indice, hit, arquivado)."""
+    out = []
+    for i, ev in enumerate(eventos):
+        if ev.get("evento") != "HIT" or eh_teste(ev) or ev.get("classe"):
+            continue
+        q = set(tokens(ev.get("consulta", "")))
+        for depois in eventos[i + 1:]:
+            if depois.get("evento") == "ARQUIVADO":
+                alvo = set(tokens(depois.get("id", "").replace("/", " ")))
+                if q and len(q & alvo) / len(q) >= 0.4 and not depois.get("substituiu"):
+                    out.append((i, ev, depois))
+                break
+    return out
+
+
+def cmd_custo(a):
+    raiz = raiz_de(a)
+    if a.etapa not in ETAPAS:
+        sys.exit(f"etapa deve ser uma de: {', '.join(ETAPAS)}")
+    if a.tokens < 0:
+        sys.exit("tokens nao pode ser negativo")
+    ped = Path(a.pedido)
+    nome = ped.name
+    extra = {"pedido": nome, "etapa": a.etapa, "tokens": a.tokens}
+    if a.agente:
+        extra["agente"] = a.agente
+    if a.modelo:
+        extra["modelo"] = a.modelo
+    if a.nota:
+        extra["nota"] = a.nota
+    registrar(raiz, "CUSTO", **extra)
+    total = sum(ev.get("tokens", 0) for ev in ler_eventos(raiz)
+                if ev.get("evento") == "CUSTO" and ev.get("pedido") == nome and not eh_teste(ev))
+    if ped.is_file() and not MODO_TESTE:
+        atualizar_frontmatter(ped, tokens_subagentes=total)
+    print(f"CUSTO: {nome}  {a.etapa} {a.tokens:,} tokens  (total do pedido: {total:,})")
+
+
+def cmd_marcar(a):
     raiz = raiz_de(a)
     log = raiz / "registro.jsonl"
-    if not log.exists():
+    linhas = log.read_text(encoding="utf-8").splitlines() if log.exists() else []
+    if a.como not in CLASSES:
+        sys.exit(f"--como deve ser um de: {', '.join(CLASSES)}")
+    for n in a.linha:
+        if not 1 <= n <= len(linhas):
+            sys.exit(f"linha {n} fora do registro (1 a {len(linhas)})")
+        ev = json.loads(linhas[n - 1])
+        if a.como == "real":
+            ev.pop("classe", None)
+            ev.pop("teste", None)
+        else:
+            ev["classe"] = a.como
+        if a.motivo:
+            ev["motivo_classe"] = a.motivo
+        linhas[n - 1] = json.dumps(ev, ensure_ascii=False)
+        print(f"linha {n}: {ev.get('evento')} {ev.get('consulta', ev.get('pedido', ''))}  -> {a.como}")
+    tmp = log.with_suffix(".jsonl.tmp")
+    tmp.write_text("\n".join(linhas) + "\n", encoding="utf-8")
+    tmp.replace(log)
+
+
+def cmd_stats(a):
+    raiz = raiz_de(a)
+    todos = ler_eventos(raiz)
+    if not todos:
         print("sem registros ainda")
         return
-    c = Counter()
-    for linha in log.read_text(encoding="utf-8").splitlines():
-        try:
-            c[json.loads(linha)["evento"]] += 1
-        except (ValueError, KeyError):
-            continue
+    eventos = [ev for ev in todos if not eh_teste(ev)]
+    testes = len(todos) - len(eventos)
+    c = Counter(ev.get("evento") for ev in eventos)
+    falsos = [ev for ev in eventos if ev.get("evento") == "HIT" and ev.get("classe") == "hit-falso"]
+    provaveis = hits_falsos_provaveis(eventos)
     buscas = sum(c[k] for k in ("HIT", "PARCIAL", "VENCIDA", "MISS"))
+    hits_reais = c["HIT"] - len(falsos) - len(provaveis)
+
+    print(f"USO REAL (sem {testes} evento(s) de teste)")
     print(f"buscas: {buscas}  HIT={c['HIT']}  PARCIAL={c['PARCIAL']}  VENCIDA={c['VENCIDA']}  MISS={c['MISS']}")
+    if falsos or provaveis:
+        print(f"  HIT falso: {len(falsos)} marcado(s)" + (f", {len(provaveis)} provavel(is) ainda nao marcado(s)"
+                                                         " (veja auditar)" if provaveis else ""))
     if buscas:
-        print(f"taxa de reaproveitamento total (HIT): {c['HIT'] / buscas:.0%}")
+        print(f"reaproveitamento real (HIT de verdade): {hits_reais} de {buscas} = {hits_reais / buscas:.0%}")
         print(f"reaproveitamento parcial/incremental: {(c['PARCIAL'] + c['VENCIDA']) / buscas:.0%}")
     rotas = c["ROTA_REGRA"] + c["ROTA_AMBIGUA"] + c["ROTA_SEM_CANDIDATO"]
     if rotas:
         print(f"roteamentos resolvidos so por regra (sem LLM): {c['ROTA_REGRA'] / rotas:.0%} de {rotas}")
     print(f"pesquisas arquivadas: {c['ARQUIVADO']}")
-    economia = (
-        c["HIT"] * (a.custo_pesquisa - a.custo_hit)
-        + c["PARCIAL"] * 0.5 * a.custo_pesquisa
-        + c["VENCIDA"] * 0.3 * a.custo_pesquisa
-    )
-    print(
-        f"economia ESTIMADA: ~{int(economia):,} tokens "
-        f"(premissas: pesquisa nova {a.custo_pesquisa:,}, reaproveitar {a.custo_hit:,}; "
-        "parcial economiza 50%, vencida 30%). Meca o seu custo real e ajuste os parametros."
-    )
+
+    custos = [ev for ev in eventos if ev.get("evento") == "CUSTO"]
+    if not custos:
+        economia = hits_reais * (a.custo_pesquisa - a.custo_hit) + c["PARCIAL"] * 0.5 * a.custo_pesquisa \
+            + c["VENCIDA"] * 0.3 * a.custo_pesquisa
+        print(f"economia ESTIMADA: ~{int(economia):,} tokens (sem custos medidos; premissas: pesquisa nova "
+              f"{a.custo_pesquisa:,}, reaproveitar {a.custo_hit:,}). Registre os custos com `acervo.py custo`.")
+        return
+
+    resultado = {}
+    for ev in eventos:
+        if ev.get("evento") == "RESPONDIDO":
+            resultado[ev.get("pedido")] = "descartada" if ev.get("descartado") else f"respondido, {ev.get('resultado', '-')}"
+    por_pedido = {}
+    for ev in custos:
+        d = por_pedido.setdefault(ev["pedido"], Counter())
+        d[ev.get("etapa", "outro")] += ev.get("tokens", 0)
+    for nome in por_pedido:  # pedidos respondidos antes do comando responder existir
+        if nome not in resultado:
+            arqs = list(escritorio_de(a).glob(f"*/pedidos/{nome}"))
+            if arqs:
+                meta, _ = ler_frontmatter(arqs[0].read_text(encoding="utf-8"))
+                if valor(meta, "status") == "respondido":
+                    resultado[nome] = "respondido"
+    print()
+    print("CUSTO MEDIDO (tokens de subagente; a sessao principal nao e medida)")
+    for nome, d in por_pedido.items():
+        etapas = ", ".join(f"{k} {v:,}" for k, v in d.items())
+        print(f"  {sum(d.values()):>9,}  {nome}  [{resultado.get(nome, 'em andamento')}]  {etapas}")
+    total = sum(sum(d.values()) for d in por_pedido.values())
+    desperdicio = sum(d["falha"] for d in por_pedido.values())
+    novas = [n for n in por_pedido if por_pedido[n]["pesquisa"] or por_pedido[n]["rodada"]]
+    gasto_novas = sum(sum(por_pedido[n].values()) for n in novas)
+    print(f"  total: {total:,}   desperdicio (etapa falha): {desperdicio:,}")
+    if c["ARQUIVADO"]:
+        medio = gasto_novas / c["ARQUIVADO"]
+        print(f"  custo por pesquisa arquivada: {medio:,.0f}  (tudo o que foi gasto em pesquisa nova, "
+              "inclusive descartadas e falhas, dividido pelas arquivadas)")
+        custo_hit = sum(por_pedido[n]["hit"] for n in por_pedido) / hits_reais if hits_reais else 0
+        print(f"economia MEDIDA: {hits_reais} HIT(s) de verdade x {medio:,.0f} = ~{hits_reais * (medio - custo_hit):,.0f} "
+              "tokens de subagente evitados")
 
 
 # --------------------------------------------------------------------- main
@@ -831,6 +949,7 @@ def main():
     comum = argparse.ArgumentParser(add_help=False)
     comum.add_argument("--raiz", help="pasta do acervo (padrao: $ESCRITORIO_ACERVO ou ./escritorio/acervo)")
     comum.add_argument("--hoje", help="data AAAA-MM-DD (para testes)")
+    comum.add_argument("--teste", action="store_true", help="marca os eventos como teste (fora do stats)")
 
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -926,12 +1045,29 @@ def main():
     s.add_argument("--revisado", action="store_true", help="curador terminou: zera os avisos tirados do registro")
     s.set_defaults(f=cmd_auditar)
 
+    s = sp.add_parser("custo", parents=[comum])
+    s.add_argument("pedido", help="arquivo do pedido (ou so o nome)")
+    s.add_argument("--etapa", required=True, help=" | ".join(ETAPAS))
+    s.add_argument("--tokens", type=int, required=True, help="subagent_tokens que a ferramenta Agent relatou")
+    s.add_argument("--agente")
+    s.add_argument("--modelo")
+    s.add_argument("--nota")
+    s.set_defaults(f=cmd_custo)
+
+    s = sp.add_parser("marcar", parents=[comum])
+    s.add_argument("--linha", type=int, nargs="+", required=True, help="numero(s) da linha no registro.jsonl")
+    s.add_argument("--como", required=True, help=" | ".join(CLASSES))
+    s.add_argument("--motivo")
+    s.set_defaults(f=cmd_marcar)
+
     s = sp.add_parser("stats", parents=[comum])
     s.add_argument("--custo-pesquisa", type=int, default=120000, help="tokens medios de uma pesquisa nova")
     s.add_argument("--custo-hit", type=int, default=6000, help="tokens medios para reaproveitar")
     s.set_defaults(f=cmd_stats)
 
     args = p.parse_args()
+    global MODO_TESTE
+    MODO_TESTE = args.teste or os.environ.get("ESCRITORIO_TESTE", "") not in ("", "0")
     args.f(args)
 
 
