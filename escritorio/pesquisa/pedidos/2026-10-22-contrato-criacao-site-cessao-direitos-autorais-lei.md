@@ -10,7 +10,7 @@ alvo:
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md
-tokens_subagentes: 190075
+tokens_subagentes: 313854
 resposta: escritorio/juridico/respostas/2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md
 ---
 # Pergunta
