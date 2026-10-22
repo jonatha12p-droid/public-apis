@@ -115,3 +115,11 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - Primeiro pedido real usando o fluxo completo e o registro de custo. Arquivada com nota 4 depois de uma rodada extra. Custo: 241.630 tokens (pesquisa 96.698, rodada 90.508, duas curadorias somando 54.424).
 - Defeito encontrado e corrigido no `checar`: ele só contava `[verificado]` escrito exatamente assim e ignorava marcas com ressalva, como `[verificado, 2026-10-21]`. Neste relatório havia 24 verificadas, não 8. As notas provisórias das outras pesquisas não mudaram, exceto a da primeira versão de frequência de posts (descartada), que subiu de 3 para 4. Aquele descarte foi decidido pela curadoria por conteúdo, então continua valendo.
 - Playwright instalado (2026-10-22): MCP do projeto via `.mcp.json` e `.claude/mcp/playwright.sh`, e modo `--js` no `ler_pagina.py` para os pesquisadores. Leu os preços do Vizard montados por JavaScript; o Canva continua bloqueado pelo Cloudflare. As 25 ferramentas do MCP custam cerca de 5.300 tokens por sessão.
+
+## Andar jurídico (2026-10-22)
+
+- Criado o andar `juridico`, com as pastas pedidos, respostas e modelos, o `diretor-juridico` (Haiku, reservado) e o `redator-contratos` (Sonnet). O redator não pesquisa na web: parte dos modelos do andar, busca a base legal no acervo e devolve os `PEDIDOS_DE_PESQUISA` do que faltar. As minutas ficam em `escritorio/privado/juridico/`, fora do git.
+- A pesquisa jurídica continua no andar de Pesquisa, feita pelo `pesquisador-legal`, cujo roteamento ganhou 18 palavras (cláusula, jurisprudência, CDC, STJ...). Os dois testes de `rotear` deram `ROTA` por regra.
+- Tipo novo: `jurisprudencia`, com validade de 90 dias.
+- Regra nova do `checar`: perde 1 ponto o item de Achados que cita artigo, lei, resolução, súmula ou decisão sem fonte oficial (.gov.br, .jus.br, .leg.br ou conselho profissional). Itens já marcados [não verificado] não contam de novo. As 5 pesquisas arquivadas mantiveram a nota provisória.
+- `escritorio/juridico/modelos/checklist-revisao.md`: os 11 artigos citados (CC 412, 413, 473, 598; CDC 49, 51; Lei 9.610, art. 49; LGPD 7º e 39; CPC 63; Lei 14.063, art. 4º) foram conferidos no Planalto com o `ler_pagina.py`.

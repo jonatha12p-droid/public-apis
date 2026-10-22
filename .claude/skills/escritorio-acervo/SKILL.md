@@ -20,7 +20,7 @@ Quem orquestra é a sessão principal. Só a pesquisa e o julgamento da curadori
    - `HIT`: o script já grava a resposta no andar de origem. Fim.
    - `PARCIAL` / `VENCIDA` / `MISS`: sai um bloco `DECISAO` (agente, nível, escopo, pergunta, critérios, caminho de saída). Se o agente vier como `ESCOLHA entre ...`, escolha um dos listados.
 3. **Pesquisar.** Acione o agente pesquisador indicado com o bloco `DECISAO`. Nunca baixe o nível para economizar (ver `references/politica-pesquisa.md`).
-4. **Checar** (checklist mecânico): `A checar <relatorio> --nivel <nivel>` dá a `NOTA_PROVISORIA`.
+4. **Checar** (checklist mecânico): `A checar <relatorio> --nivel <nivel>` dá a `NOTA_PROVISORIA`. Item de Achados que cita norma ou decisão sem fonte oficial (.gov.br, .jus.br, .leg.br, conselho) perde 1 ponto.
 5. **Curadoria.** Acione o `diretor-pesquisa` com: pedido, relatório, saída do `checar` e a devolução do pesquisador. Ele julga o que o script não vê, confirma ou corrige a nota e:
    - nota 4 ou 5: arquiva (`A arquivar ...`) e responde (`A responder <pedido> --id <id>`);
    - nota 3: devolve as lacunas; acione o pesquisador de novo (no máximo 1 rodada extra);
@@ -30,7 +30,7 @@ Quem orquestra é a sessão principal. Só a pesquisa e o julgamento da curadori
    `A custo <pedido> --etapa triagem|pesquisa|rodada|curadoria|falha|hit --tokens N`
    Use `falha` para rodadas perdidas por problema de ferramenta. Num HIT resolvido só por script, registre `--etapa hit --tokens 0`. Sem isso o `stats` não consegue medir a economia.
 
-Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-sociais 30d, legislacao 60d, ferramenta 60d, tecnologia 90d, conceito e pesquisa-academica 365d. Use `--validade-dias` no `arquivar` para exceções.
+Tipos e validade padrão: preco 3d, noticia 7d, mercado 30d, ia 30d, redes-sociais 30d, legislacao 60d, ferramenta 60d, jurisprudencia 90d, tecnologia 90d, conceito e pesquisa-academica 365d. Use `--validade-dias` no `arquivar` para exceções.
 
 ## Regras de economia (sem perder qualidade)
 

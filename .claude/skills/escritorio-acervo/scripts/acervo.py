@@ -46,6 +46,7 @@ VALIDADE_POR_TIPO = {
     "redes-sociais": 30,
     "ferramenta": 60,
     "legislacao": 60,
+    "jurisprudencia": 90,
     "tecnologia": 90,
     "pesquisa-academica": 365,
     "conceito": 365,
@@ -466,6 +467,22 @@ def cmd_rotear(a):
 NIVEIS = ["rapida", "padrao", "profunda"]
 MINIMO_FONTES = {"rapida": 3, "padrao": 8, "profunda": 15}
 
+# texto ja normalizado (sem acento, minusculo): "art. 49", "lei 8.078", "resolucao cfm 2.336", "sumula 297", "resp 1.234"
+RE_CITACAO_LEGAL = re.compile(
+    r"\b(art\.?|artigo)\s*\d|\blei\s*(complementar\s*)?(n[o.]*\s*)?\d|\bresolucao\s*(\w+\s*)?(n[o.]*\s*)?\d"
+    r"|\bsumula\s*(vinculante\s*)?\d|\b(resp|aresp|adi|adpf|hc|rext|tema)\s*\d|\bdecreto\s*(n[o.]*\s*)?\d"
+)
+# orgaos publicos, tribunais, legislativo, MP e conselhos profissionais (autarquias)
+OFICIAIS = (".gov.br", ".jus.br", ".leg.br", ".mp.br", ".def.br")
+# conselhos federais e regionais (crp04.org.br, sistemas.cfm.org.br, oabsp.org.br...)
+RE_CONSELHO = re.compile(r"(^|\.)(cfm|cfo|cfp|cfa|cfc|cfn|cff|cofen|cofeci|confea|oab|crm|cro|crp|cra|crc|crn|crf"
+                         r"|coren|creci|crea|creme[a-z]{1,3})(-?[a-z]{2}|[0-9]{1,2})?\.org\.br$")
+
+
+def fonte_oficial(url):
+    dom = re.sub(r"^www\.", "", url.split("/")[2].lower()) if url.count("/") >= 2 else ""
+    return dom.endswith(OFICIAIS) or dom in {"gov.br", "jus.br", "leg.br"} or bool(RE_CONSELHO.search(dom))
+
 
 def escritorio_de(a):
     return Path(a.escritorio) if getattr(a, "escritorio", None) else raiz_de(a).parent
@@ -676,6 +693,19 @@ def cmd_checar(a):
     verif = sum(1 for m in marcas if m.startswith("verificad"))
     nao_verif = sum(1 for m in marcas if m.startswith("nao verificad") or "nao verificad" in m[len("verificad"):])
     minimo = MINIMO_FONTES.get(a.nivel, 8)
+    # citacao de norma ou decisao (art., lei, sumula, REsp...) precisa de fonte oficial
+    urls_por_num = {}
+    for l in entradas:
+        m = re.match(r"^\s*\[(\d+)\]", l)
+        if m:
+            urls_por_num[m.group(1)] = re.findall(r"https?://[^\s)>\]]+", l)
+    sem_oficial = []
+    for l in bullets:  # so itens de primeiro nivel; marcados [nao verificado] ja perdem ponto acima
+        if l[0].isspace() or not RE_CITACAO_LEGAL.search(norm(l)) or "nao verificad" in norm(l):
+            continue
+        nums = re.findall(r"\[(\d+)", l)
+        if nums and not any(fonte_oficial(u) for n in nums for u in urls_por_num.get(n, [])):
+            sem_oficial.append(l.strip())
 
     itens = [
         ("3+ angulos em Achados (### )", angulos >= 3, f"{angulos} angulos"),
@@ -691,6 +721,8 @@ def cmd_checar(a):
     pouca_verificacao = nao_verif > verif
     if pouca_verificacao:
         ajuste -= 1
+    if sem_oficial:
+        ajuste -= 1
     print(f"CHECAGEM: {arq}  (nivel {a.nivel})")
     for nome, ok, det in itens:
         print(f"  [{'x' if ok else ' '}] {nome}: {det}")
@@ -702,6 +734,9 @@ def cmd_checar(a):
     if pouca_verificacao:
         print(f"  ajuste -1: mais afirmacoes [nao verificado] ({nao_verif}) que [verificado] ({verif}); "
               "o passe de verificacao nao foi feito (leia as fontes inteiras)")
+    if sem_oficial:
+        print(f"  ajuste -1: {len(sem_oficial)} citacao(oes) de norma ou decisao sem fonte oficial "
+              f"(.gov.br, .jus.br, .leg.br, conselho), ex.: {sem_oficial[0][:100]}")
     nota = max(1, pontos + ajuste)
     print(f"NOTA_PROVISORIA: {nota}  ({pontos} itens, ajuste {ajuste})")
     print("PARA_JULGAR (o script nao ve): profundidade real de cada angulo; se as afirmacoes centrais tem 2+ "

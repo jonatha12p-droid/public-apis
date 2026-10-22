@@ -32,5 +32,5 @@ Todo relatório arquivado segue esta estrutura. O arquivo é salvo em `.md`; o s
 
 - **Título:** específico. "Custo de tokens em sistemas multiagente" é melhor que "IA".
 - **Tags (5 a 10):** inclua sinônimos e termos em português e inglês. A busca é lexical, então tag boa vale mais que resumo bonito.
-- **Tipo:** define a validade (preco, noticia, mercado, legislacao, tecnologia, conceito, pesquisa-academica).
+- **Tipo:** define a validade (preco, noticia, mercado, ia, redes-sociais, ferramenta, legislacao, jurisprudencia, tecnologia, conceito, pesquisa-academica).
 - **Resumo:** diga o que a pesquisa conclui, não só o tema. O diretor decide só por ele. Termine com "Incertezas: ..." listando o que ficou sem verificação; a busca não dá `HIT` com base nesse trecho.

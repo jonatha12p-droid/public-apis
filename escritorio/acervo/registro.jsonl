@@ -54,3 +54,5 @@
 {"ts": "2026-10-21T18:58:40", "evento": "ARQUIVADO", "id": "pesquisa/estrategias-de-call-de-vendas-para-servicos-digitais-de-baix", "substituiu": false}
 {"ts": "2026-10-21T18:58:43", "evento": "RESPONDIDO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "resultado": "MISS", "descartado": false}
 {"ts": "2026-10-21T18:58:52", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "curadoria", "tokens": 34320, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T01:34:58", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T01:34:58", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
