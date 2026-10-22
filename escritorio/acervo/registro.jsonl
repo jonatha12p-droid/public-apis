@@ -97,3 +97,7 @@
 {"ts": "2026-10-22T02:14:41", "evento": "CUSTO", "pedido": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md", "etapa": "curadoria", "tokens": 30835, "agente": "diretor-pesquisa", "modelo": "haiku"}
 {"ts": "2026-10-22T02:14:46", "evento": "CUSTO", "pedido": "2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md", "etapa": "pesquisa", "tokens": 87726, "agente": "pesquisador-legal", "modelo": "sonnet"}
 {"ts": "2026-10-22T02:15:22", "evento": "CUSTO", "pedido": "2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md", "etapa": "curadoria", "tokens": 19977, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T02:19:57", "evento": "CUSTO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "etapa": "pesquisa", "tokens": 158769, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:20:47", "evento": "ARQUIVADO", "id": "pesquisa/anuncio-pago-de-medico-dentista-e-psicologo-regras-dos-conse", "substituiu": false}
+{"ts": "2026-10-22T02:20:50", "evento": "RESPONDIDO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-22T02:20:56", "evento": "CUSTO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "etapa": "curadoria", "tokens": 36040, "agente": "diretor-pesquisa", "modelo": "haiku"}

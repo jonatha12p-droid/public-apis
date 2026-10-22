@@ -1,7 +1,7 @@
 ---
 de: juridico
 para: pesquisa
-status: aberto
+status: respondido
 nivel_sugerido: padrao
 palavras: anúncio pago impulsionamento tráfego pago saúde CFM 2.336 CFO CFP Google Ads política saúde Meta anúncios
 criado: 2026-10-22
@@ -10,6 +10,8 @@ alvo:
 agente: pesquisador-tecnico
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md
+tokens_subagentes: 194809
+resposta: escritorio/juridico/respostas/2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md
 ---
 # Pergunta
 Quais regras valem para anúncio pago e impulsionamento (tráfego pago) de médico, dentista e psicólogo, e quais as políticas do Google Ads e da Meta para anúncios de saúde no Brasil?
