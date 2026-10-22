@@ -10,7 +10,7 @@ alvo:
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md
-tokens_subagentes: 107252
+tokens_subagentes: 138087
 resposta: escritorio/juridico/respostas/2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md
 ---
 # Pergunta
