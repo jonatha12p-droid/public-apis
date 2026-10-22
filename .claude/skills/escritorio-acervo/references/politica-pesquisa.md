@@ -14,6 +14,13 @@ Os valores são orçamentos de **referência** (estimativas), não limites impos
 
 Em dúvida entre dois níveis, escolha o maior. Pesquisa rasa arquivada contamina o acervo e é reaproveitada depois como se fosse boa.
 
+**Quando a rápida basta** (o `triar` já desce para rápida nos dois primeiros casos):
+- atualização de pesquisa vencida (`VENCIDA`): só o que mudou desde a data da base;
+- lacuna pequena de uma pesquisa existente (`PARCIAL` com até 3 termos faltando);
+- confirmação pontual: "o artigo X ainda diz Y?", "o preço do plano Z mudou?", "o termo de uso ainda permite W?". Peça com `--nivel rapida` e, no `triar`, use `--rapida-ok`.
+
+Tema novo, comparação ou base para decisão continua no padrão ou no profundo.
+
 ## Método (níveis padrão e profundo)
 
 1. **Plano antes de buscar.** Decomponha em 3 a 5 sub-perguntas (ângulos) e escreva para cada uma o critério de "respondida".
@@ -31,8 +38,14 @@ Em dúvida entre dois níveis, escolha o maior. Pesquisa rasa arquivada contamin
 
 Pare quando **duas buscas seguidas não trouxerem informação nova relevante** ou quando o orçamento do nível acabar. Se parar pelo orçamento com lacunas importantes, registre-as na seção de incertezas em vez de esconder.
 
+## Fontes bloqueadas
+
+Alguns sites bloqueiam robôs (Cloudflare e afins) e não abrem nem com `--js`. A lista fica em `references/dominios-bloqueados.json`; o `ler_pagina.py` responde `BLOQUEADO` na hora e anota sozinho bloqueios novos. Fonte bloqueada vira `[não verificado: fonte bloqueada, leitura humana]` no relatório e entra na seção de incertezas. **Isso não justifica rodada extra**: uma nova rodada bate no mesmo bloqueio. Se a pergunta central depender dela, a curadoria devolve `LEITURA_HUMANA` com as URLs, para o usuário ler e enviar o texto.
+
 ## Onde NÃO gastar tokens
 
+- Ler página inteira quando `--buscar` resolve; cada página lida fica no contexto até o fim e encarece todas as chamadas seguintes.
+- Tentar várias URLs de um site que já respondeu 401/403 de anti-robô.
 - Reler a mesma página duas vezes.
 - Colar resultados brutos de busca no contexto do diretor.
 - Repetir instruções que já estão no prompt fixo.

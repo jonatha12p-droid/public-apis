@@ -102,3 +102,11 @@
 {"ts": "2026-10-22T02:20:50", "evento": "RESPONDIDO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "resultado": "MISS", "descartado": false}
 {"ts": "2026-10-22T02:20:56", "evento": "CUSTO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "etapa": "curadoria", "tokens": 36040, "agente": "diretor-pesquisa", "modelo": "haiku"}
 {"ts": "2026-10-22T02:26:20", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "outro", "tokens": 123779, "agente": "redator-contratos", "modelo": "sonnet"}
+{"ts": "2026-10-22T03:29:49", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T03:29:49", "evento": "PARCIAL", "consulta": "direito de imagem código civil art. 20 constituição art. 5 X marco civil internet lei 12.965 guarda registros acesso aplicação portfólio depoimento", "andar": "*", "alvo": "pesquisa/direito-de-imagem-cc-art-20-cf-art-5o-x-e-marco-civil-em-sit", "teste": true}
+{"ts": "2026-10-22T03:29:56", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T03:29:56", "evento": "HIT", "consulta": "transferência internacional dados LGPD cláusulas-padrão ANPD hospedagem uruguai", "andar": "*", "alvo": "pesquisa/lgpd-arts-33-a-36-e-resolucao-cd-anpd-19-2024-transferencia-", "teste": true}
+{"ts": "2026-10-22T03:29:56", "evento": "RESPONDIDO", "pedido": "p2.md", "resultado": "HIT", "descartado": false, "teste": true}
+{"ts": "2026-10-22T03:30:04", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T03:30:04", "evento": "HIT", "consulta": "transferência internacional dados LGPD cláusulas-padrão ANPD uruguai argentina chile", "andar": "*", "alvo": "pesquisa/lgpd-arts-33-a-36-e-resolucao-cd-anpd-19-2024-transferencia-", "teste": true}
+{"ts": "2026-10-22T03:30:04", "evento": "RESPONDIDO", "pedido": "p3.md", "resultado": "HIT", "descartado": false, "teste": true}

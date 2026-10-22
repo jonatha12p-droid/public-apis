@@ -10,8 +10,13 @@ Uso:
   python3 -I ler_pagina.py <url> --buscar "termo1,termo2"   # so paragrafos com os termos
   python3 -I ler_pagina.py <url> --js       # abre num navegador de verdade (Playwright)
                                             # para paginas montadas por JavaScript
+
+Economia: a saida padrao corta em 5.000 caracteres (~1.300 tokens); comece com --buscar.
+Dominios em references/dominios-bloqueados.json respondem na hora com BLOQUEADO, sem gastar
+tentativas. Um bloqueio anti-robo novo (Cloudflare) entra na lista sozinho; --forcar ignora a lista.
 """
 import argparse
+import datetime
 import html
 import json
 import os
@@ -22,6 +27,7 @@ import subprocess
 import sys
 import tempfile
 import unicodedata
+import urllib.error
 import urllib.request
 from html.parser import HTMLParser
 
@@ -59,6 +65,42 @@ class Texto(HTMLParser):
             self.partes.append(data)
 
 
+LISTA_BLOQUEIO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "dominios-bloqueados.json")
+
+
+def dominio(url):
+    return re.sub(r"^www\.", "", url.split("/")[2].lower()) if url.count("/") >= 2 else ""
+
+
+def bloqueados():
+    try:
+        with open(LISTA_BLOQUEIO, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+def bloqueio_de(url):
+    dom, lista = dominio(url), bloqueados()
+    for d, info in lista.items():
+        if dom == d or dom.endswith("." + d):
+            return d, info
+    return None, None
+
+
+def anotar_bloqueio(url, motivo):
+    lista, dom = bloqueados(), dominio(url)
+    if not dom or bloqueio_de(url)[0]:
+        return
+    lista[dom] = {"motivo": motivo, "visto": datetime.date.today().isoformat()}
+    try:
+        with open(LISTA_BLOQUEIO, "w", encoding="utf-8") as f:
+            json.dump(dict(sorted(lista.items())), f, ensure_ascii=False, indent=2)
+            f.write("\n")
+    except OSError:
+        pass
+
+
 def norm(s):
     s = unicodedata.normalize("NFKD", s.lower())
     return "".join(c for c in s if not unicodedata.combining(c))
@@ -70,7 +112,13 @@ def baixar(url, tempo):
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
         "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
     })
-    with urllib.request.urlopen(req, timeout=tempo, context=ctx) as r:
+    try:
+        r = urllib.request.urlopen(req, timeout=tempo, context=ctx)
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403) and (e.headers.get("cf-mitigated") or "cloudflare" in (e.headers.get("server") or "").lower()):
+            anotar_bloqueio(url, f"Cloudflare (HTTP {e.code})")
+        raise
+    with r:
         bruto = r.read(30_000_000)
         tipo = r.headers.get_content_type()
         if tipo == "application/pdf" or bruto[:5] == b"%PDF-":
@@ -141,6 +189,10 @@ def renderizar(url, tempo):
     if r.returncode != 0:
         raise RuntimeError((r.stderr.strip() or "falha no navegador")[:300])
     d = json.loads(r.stdout.strip().splitlines()[-1])
+    if re.search(r"just a moment|um momento|attention required", d["titulo"], re.I) or \
+            (len(d["texto"]) < 600 and re.search(r"verify you are human|cloudflare|captcha", d["texto"], re.I)):
+        anotar_bloqueio(url, "Cloudflare (desafio no navegador)")
+        raise RuntimeError("bloqueio anti-robo (Cloudflare) no navegador; dominio anotado na lista de bloqueados")
     return d["url"], d["titulo"], d["texto"]
 
 
@@ -148,10 +200,15 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("url")
     p.add_argument("--buscar", help="termos separados por virgula; mostra so os paragrafos que os contem")
-    p.add_argument("--max", type=int, default=15000, help="maximo de caracteres na saida")
+    p.add_argument("--max", type=int, default=5000, help="maximo de caracteres na saida (padrao 5000)")
     p.add_argument("--tempo", type=int, default=30)
     p.add_argument("--js", action="store_true", help="renderiza num navegador (Playwright) antes de ler")
+    p.add_argument("--forcar", action="store_true", help="tenta mesmo se o dominio estiver na lista de bloqueados")
     a = p.parse_args()
+    dom_b, info = bloqueio_de(a.url)
+    if dom_b and not a.forcar:
+        sys.exit(f"BLOQUEADO: {dom_b} ({info.get('motivo')}, visto em {info.get('visto')}). Nao tente outra URL do "
+                 "mesmo site: marque a afirmacao [nao verificado: fonte bloqueada, leitura humana] e siga.")
     try:
         if a.js:
             final, titulo_js, corpo = renderizar(a.url, a.tempo)
@@ -175,8 +232,11 @@ def main():
         termos = [norm(x.strip()) for x in a.buscar.split(",") if x.strip()]
         pars = [l for l in pars if any(t in norm(l) for t in termos)]
     saida = "\n".join(pars)
-    print(f"URL: {final}\nTITULO: {titulo}\nCARACTERES: {len(saida)}{' (cortado em ' + str(a.max) + ')' if len(saida) > a.max else ''}\n---")
+    cortado = len(saida) > a.max
+    print(f"URL: {final}\nTITULO: {titulo}\nCARACTERES: {len(saida)}{' (cortado em ' + str(a.max) + ')' if cortado else ''}\n---")
     print(saida[: a.max])
+    if cortado and not a.buscar:
+        print(f"--- [cortado: {len(saida) - a.max} caracteres a mais. Use --buscar \"termo1,termo2\" para ler so o que importa]")
 
 
 if __name__ == "__main__":

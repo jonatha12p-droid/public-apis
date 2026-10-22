@@ -1,0 +1,8 @@
+{
+  "canva.com": {"motivo": "Cloudflare (HTTP 403), tambem com --js", "visto": "2026-10-21"},
+  "pexels.com": {"motivo": "Cloudflare (HTTP 403), tambem com --js", "visto": "2026-10-22"},
+  "portal.stf.jus.br": {"motivo": "HTTP 403 em todas as URLs tentadas", "visto": "2026-10-22"},
+  "shutterstock.com": {"motivo": "HTTP 403 em todas as URLs, tambem com --js e Wayback", "visto": "2026-10-22"},
+  "site.cfp.org.br": {"motivo": "HTTP 403 em todas as URLs tentadas", "visto": "2026-10-22"},
+  "unsplash.com": {"motivo": "HTTP 401, tambem com --js", "visto": "2026-10-22"}
+}

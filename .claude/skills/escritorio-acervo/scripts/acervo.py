@@ -284,9 +284,58 @@ def cmd_ler(a):
     print(f"id: {e['id']}\ntitulo: {e['titulo']}\ncriado: {e['criado']}  valido ate: {valida_ate(e)}")
     print(f"tags: {', '.join(e.get('tags', []))}\nresumo: {e['resumo']}")
     print(f"arquivo: {raiz / e['caminho']}")
-    if a.completo:
+    if a.completo or a.secao or a.angulo:
         _, corpo = ler_frontmatter((raiz / e["caminho"]).read_text(encoding="utf-8"))
-        print("\n" + corpo.strip())
+        print("\n" + (corpo.strip() if a.completo else trecho(corpo, a.secao, a.angulo)))
+
+
+def trecho(corpo, secoes_pedidas, angulo):
+    """So as secoes pedidas (achados, contrapontos, incertezas, fontes...) e, em Achados, so os angulos com o termo."""
+    mapa = secoes(corpo)
+    nomes = [norm(s.strip()) for s in (secoes_pedidas or "achados").split(",") if s.strip()]
+    partes = []
+    for k, v in mapa.items():
+        if not any(k.startswith(n[:6]) for n in nomes):
+            continue
+        if angulo and k.startswith("achado"):
+            blocos = re.split(r"(?m)^(?=###\s)", v)
+            v = "\n".join(b for b in blocos if norm(angulo) in norm(b.splitlines()[0] if b else ""))
+            v = v or f"(nenhum angulo com '{angulo}'; titulos: " + "; ".join(
+                b.splitlines()[0][4:] for b in blocos if b.startswith("###")) + ")"
+        partes.append(f"## {k}\n{v}")
+    return "\n\n".join(partes) or "(secao nao encontrada; secoes: " + ", ".join(mapa) + ")"
+
+
+# --------------------------------------------------------------- pacote
+def cmd_pacote(a):
+    """Resumo enxuto do relatorio para a curadoria: o diretor le isto, nao o relatorio inteiro."""
+    arq = Path(a.relatorio)
+    if not arq.is_file():
+        sys.exit(f"relatorio nao encontrado: {arq}")
+    _, corpo = ler_frontmatter(arq.read_text(encoding="utf-8"))
+    mapa = secoes(corpo)
+    corta = lambda s, n: s if len(s) <= n else s[: n - 3] + "..."
+    print(f"PACOTE DE CURADORIA: {arq}")
+    for rotulo, chaves, limite in (("PERGUNTA", ("pergunta",), 500), ("RESUMO", ("resumo",), 900)):
+        print(f"\n## {rotulo}\n{corta(secao(mapa, *chaves), limite)}")
+    print("\n## ANGULOS (titulo, itens, fontes citadas e marcas)")
+    for bloco in re.split(r"(?m)^(?=###\s)", secao(mapa, "achado")):
+        if not bloco.startswith("###"):
+            continue
+        linhas = bloco.splitlines()
+        itens = [l for l in linhas if re.match(r"^\s*([-*]|\d+\.)\s", l)]
+        cit = sorted({n for l in itens for n in re.findall(r"\[(\d+)", l)}, key=int)
+        nv = sum("nao verificad" in norm(l) for l in itens)
+        print(f"- {linhas[0][4:].strip()}: {len(itens)} itens; fontes [{','.join(cit)}]; {nv} nao verificados")
+        print(f"    1o item: {corta(itens[0].strip(), 220) if itens else '-'}")
+    for rotulo, chaves, limite in (("CONTRAPONTOS", ("contraponto", "critica", "limitac"), 900),
+                                   ("INCERTEZAS", ("incerteza", "lacuna"), 1200)):
+        print(f"\n## {rotulo}\n{corta(secao(mapa, *chaves), limite)}")
+    print("\n## FONTES")
+    for l in secao(mapa, "fonte", "referencia").splitlines():
+        if l.strip():
+            print(corta(l.strip(), 200))
+    print("\nPara conferir um ponto: grep -n '<termo>' " + str(arq) + "  (nao leia o relatorio inteiro)")
 
 
 def cmd_listar(a):
@@ -556,6 +605,8 @@ def cmd_pedir(a):
         arq = pasta / f"{hoje.isoformat()}-{slug}-{n}.md"
         n += 1
     criterios = "\n".join(f"- {c}" for c in a.criterio) or "- <defina o criterio>"
+    criterios += ("\n- Fonte bloqueada (BLOQUEADO no ler_pagina, Cloudflare, 401/403): marque "
+                  "[nao verificado: fonte bloqueada, leitura humana] e siga; isso nao pede rodada extra.")
     arq.write_text(
         f"---\nde: {de}\npara: {para}\nstatus: aberto\nnivel_sugerido: {a.nivel}\n"
         f"palavras: {a.palavras or ''}\ncriado: {hoje.isoformat()}\n---\n"
@@ -596,6 +647,9 @@ def cmd_triar(a):
 
     if resultado == "MISS" and sugerido == "rapida" and not a.rapida_ok:
         nivel, nota_nivel = "padrao", " (subiu de rapida: MISS pede no minimo padrao; use --rapida-ok se for pergunta factual simples)"
+    elif sugerido == "padrao" and (resultado == "VENCIDA" or (resultado == "PARCIAL" and len(res[0]["faltam"]) <= 3)):
+        # so o que mudou ou uma lacuna pequena: a base ja tem a profundidade
+        nivel, nota_nivel = "rapida", f" (desceu de padrao: {resultado} com base no acervo; a base ja cobre o resto)"
     else:
         nivel, nota_nivel = sugerido, ""
     saida = (escritorio_de(a) / "pesquisa" / "rascunhos" / ped.name).relative_to(escritorio_de(a).parent)
@@ -1013,7 +1067,13 @@ def main():
     s = sp.add_parser("ler", parents=[comum])
     s.add_argument("id")
     s.add_argument("--completo", action="store_true")
+    s.add_argument("--secao", help="so estas secoes, ex: achados,incertezas (economiza tokens)")
+    s.add_argument("--angulo", help="em Achados, so os angulos (###) cujo titulo tem este termo")
     s.set_defaults(f=cmd_ler)
+
+    s = sp.add_parser("pacote", parents=[comum], help="resumo enxuto de um relatorio para a curadoria")
+    s.add_argument("relatorio")
+    s.set_defaults(f=cmd_pacote)
 
     s = sp.add_parser("arquivar", parents=[comum])
     s.add_argument("--arquivo", required=True)

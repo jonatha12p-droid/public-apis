@@ -21,9 +21,9 @@ Quem orquestra é a sessão principal. Só a pesquisa e o julgamento da curadori
    - `PARCIAL` / `VENCIDA` / `MISS`: sai um bloco `DECISAO` (agente, nível, escopo, pergunta, critérios, caminho de saída). Se o agente vier como `ESCOLHA entre ...`, escolha um dos listados.
 3. **Pesquisar.** Acione o agente pesquisador indicado com o bloco `DECISAO`. Nunca baixe o nível para economizar (ver `references/politica-pesquisa.md`).
 4. **Checar** (checklist mecânico): `A checar <relatorio> --nivel <nivel>` dá a `NOTA_PROVISORIA`. Item de Achados que cita norma ou decisão sem fonte oficial (.gov.br, .jus.br, .leg.br, conselho) perde 1 ponto.
-5. **Curadoria.** Acione o `diretor-pesquisa` com: pedido, relatório, saída do `checar` e a devolução do pesquisador. Ele julga o que o script não vê, confirma ou corrige a nota e:
+5. **Curadoria.** Acione o `diretor-pesquisa` com: pedido, relatório, saída do `checar` e a devolução do pesquisador. Ele julga pelo `A pacote <relatorio>` (resumo enxuto do relatório), não pelo relatório inteiro. Ele julga o que o script não vê, confirma ou corrige a nota e:
    - nota 4 ou 5: arquiva (`A arquivar ...`) e responde (`A responder <pedido> --id <id>`);
-   - nota 3: devolve as lacunas; acione o pesquisador de novo (no máximo 1 rodada extra);
+   - nota 3: devolve as lacunas; acione o pesquisador de novo (no máximo 1 rodada extra). Se ele devolver `LEITURA_HUMANA`, não abra rodada: peça ao usuário o texto das URLs bloqueadas;
    - nota 1 ou 2: `A responder <pedido> --descartar "motivo"`.
 6. **Entregar** ao andar solicitante só o resumo + caminho (já está no arquivo de resposta).
 7. **Registrar o custo** de cada subagente acionado, logo depois que ele terminar, com o `subagent_tokens` que a ferramenta Agent relatou:

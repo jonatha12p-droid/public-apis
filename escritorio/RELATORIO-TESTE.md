@@ -123,3 +123,15 @@ Pedido do andar Redes Sociais sobre frequência e horário de posts no Instagram
 - Tipo novo: `jurisprudencia`, com validade de 90 dias.
 - Regra nova do `checar`: perde 1 ponto o item de Achados que cita artigo, lei, resolução, súmula ou decisão sem fonte oficial (.gov.br, .jus.br, .leg.br ou conselho profissional). Itens já marcados [não verificado] não contam de novo. As 5 pesquisas arquivadas mantiveram a nota provisória.
 - `escritorio/juridico/modelos/checklist-revisao.md`: os 11 artigos citados (CC 412, 413, 473, 598; CDC 49, 51; Lei 9.610, art. 49; LGPD 7º e 39; CPC 63; Lei 14.063, art. 4º) foram conferidos no Planalto com o `ler_pagina.py`.
+
+## Economia de tokens, itens 1 a 5 (2026-10-22)
+
+Custo medido até aqui: 2,43 milhões de tokens de subagente, ou 243 mil por pesquisa arquivada. Divisão: pesquisa 50%, curadoria 19%, rodadas extras 16%, redação 8%, falhas 5%, triagem por agente 3%.
+
+1. **Fontes bloqueadas.** `references/dominios-bloqueados.json` começa com 6 domínios. O `ler_pagina.py` responde `BLOQUEADO` na hora e anota sozinho bloqueios novos de Cloudflare (401/403 com `cf-mitigated`, ou desafio no `--js`); `--forcar` ignora a lista. Todo pedido novo traz o critério "fonte bloqueada vira [não verificado: leitura humana] e não pede rodada extra". A curadoria devolve `LEITURA_HUMANA` em vez de pedir rodada.
+2. **Páginas menores.** A saída padrão do `ler_pagina.py` caiu de 15.000 para 5.000 caracteres, com aviso para usar `--buscar` quando corta. Os 6 pesquisadores passam a começar sempre com `--buscar`.
+3. **Leitura por seção.** `acervo.py ler <id> --secao achados,incertezas --angulo "<termo>"`. No teste, o ângulo "google" da pesquisa de anúncio pago deu 4,6 mil caracteres, contra 33 mil da pesquisa inteira. O redator passou a usar isso e a manter a minuta em pasta, um arquivo por parte. A minuta da Criativos Digitais foi dividida em 8 arquivos: corpo com 5,7 mil palavras, anexos de 77 a 1,4 mil e revisão com 2,4 mil.
+4. **Curadoria leve.** `acervo.py pacote <relatorio>` monta pergunta, resumo, ângulos (com itens, fontes e marcas), contrapontos, incertezas e fontes. No teste deu 10,5 mil caracteres, contra 32 mil do relatório. O diretor julga pelo pacote e usa `grep` para conferir pontos.
+5. **Nível rápido.** O `triar` desce de padrão para rápida em `VENCIDA` e em `PARCIAL` com até 3 termos faltando. A política lista os casos de confirmação pontual (`--nivel rapida` + `--rapida-ok`).
+
+Efeito esperado: de 243 mil para 140 a 160 mil tokens por pesquisa arquivada. A ser confirmado pelo `stats` nas próximas pesquisas.
