@@ -95,3 +95,4 @@
 {"ts": "2026-10-22T02:14:33", "evento": "RESPONDIDO", "pedido": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md", "resultado": "MISS", "descartado": false}
 {"ts": "2026-10-22T02:14:35", "evento": "CUSTO", "pedido": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md", "etapa": "curadoria", "tokens": 24398, "agente": "diretor-pesquisa", "modelo": "haiku"}
 {"ts": "2026-10-22T02:14:41", "evento": "CUSTO", "pedido": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md", "etapa": "curadoria", "tokens": 30835, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T02:14:46", "evento": "CUSTO", "pedido": "2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md", "etapa": "pesquisa", "tokens": 87726, "agente": "pesquisador-legal", "modelo": "sonnet"}
