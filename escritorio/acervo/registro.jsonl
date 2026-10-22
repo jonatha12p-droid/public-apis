@@ -83,3 +83,4 @@
 {"ts": "2026-10-22T02:07:51", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
 {"ts": "2026-10-22T02:07:51", "evento": "ROTA_AMBIGUA", "teste": true}
 {"ts": "2026-10-22T02:07:55", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T02:11:33", "evento": "CUSTO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "etapa": "pesquisa", "tokens": 72635, "agente": "pesquisador-legal", "modelo": "sonnet"}

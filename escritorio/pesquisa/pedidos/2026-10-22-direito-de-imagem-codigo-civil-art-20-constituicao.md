@@ -10,6 +10,7 @@ alvo: pesquisa/contrato-de-criacao-de-site-cessao-de-direitos-autorais-lgpd
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md
+tokens_subagentes: 72635
 ---
 # Pergunta
 Quais regras de direito de imagem e do Marco Civil da Internet afetam um site de profissional de saúde e o uso do site no portfólio da agência (fotos de pessoas, depoimentos, guarda de registros de acesso, formulários)?
