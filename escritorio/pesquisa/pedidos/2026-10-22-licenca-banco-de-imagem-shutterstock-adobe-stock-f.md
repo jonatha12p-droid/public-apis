@@ -10,7 +10,7 @@ alvo:
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md
-tokens_subagentes: 87726
+tokens_subagentes: 107703
 ---
 # Pergunta
 O que as licenças de bancos de imagem (Shutterstock, Adobe Stock, Freepik, Unsplash, Pexels) e de fontes (Google Fonts, SIL Open Font License) permitem quando a agência usa o material no site de um cliente e entrega o site a ele?
