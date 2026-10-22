@@ -10,7 +10,7 @@ alvo:
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md
-tokens_subagentes: 132585
+tokens_subagentes: 156983
 resposta: escritorio/juridico/respostas/2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md
 ---
 # Pergunta
