@@ -89,3 +89,6 @@
 {"ts": "2026-10-22T02:12:22", "evento": "CUSTO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "etapa": "curadoria", "tokens": 24715, "agente": "diretor-pesquisa", "modelo": "haiku"}
 {"ts": "2026-10-22T02:13:15", "evento": "CUSTO", "pedido": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md", "etapa": "pesquisa", "tokens": 132585, "agente": "pesquisador-legal", "modelo": "sonnet"}
 {"ts": "2026-10-22T02:13:33", "evento": "CUSTO", "pedido": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md", "etapa": "pesquisa", "tokens": 107252, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:14:13", "evento": "ARQUIVADO", "id": "pesquisa/jurisprudencia-do-stj-apos-2020-sobre-cdc-e-finalismo-aprofu", "substituiu": false}
+{"ts": "2026-10-22T02:14:15", "evento": "RESPONDIDO", "pedido": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-22T02:14:26", "evento": "ARQUIVADO", "id": "pesquisa/lgpd-arts-33-a-36-e-resolucao-cd-anpd-19-2024-transferencia-", "substituiu": false}
