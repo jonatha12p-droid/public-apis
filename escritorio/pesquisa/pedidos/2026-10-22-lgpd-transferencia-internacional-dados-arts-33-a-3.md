@@ -10,6 +10,7 @@ alvo:
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md
+tokens_subagentes: 107252
 ---
 # Pergunta
 Quais regras da LGPD e da ANPD valem para transferência internacional de dados quando a hospedagem, o Google Analytics, o formulário ou o WhatsApp de um site de profissional de saúde processam dados fora do Brasil?

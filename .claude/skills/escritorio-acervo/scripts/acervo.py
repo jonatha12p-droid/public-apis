@@ -699,12 +699,19 @@ def cmd_checar(a):
         m = re.match(r"^\s*\[(\d+)\]", l)
         if m:
             urls_por_num[m.group(1)] = re.findall(r"https?://[^\s)>\]]+", l)
+            if "escritorio/acervo/" in l:  # pesquisa do acervo ja passou por esta checagem
+                urls_por_num[m.group(1)].append("acervo:")
+    for l in entradas:  # "[2] Mesma fonte [1]", "[3] ... ver [8]": herda as URLs da fonte citada
+        m = re.match(r"^\s*\[(\d+)\]", l)
+        if m and not urls_por_num.get(m.group(1)):
+            urls_por_num[m.group(1)] = [u for r in re.findall(r"\[(\d+)\]", l[m.end():])
+                                        for u in urls_por_num.get(r, [])]
     sem_oficial = []
     for l in bullets:  # so itens de primeiro nivel; marcados [nao verificado] ja perdem ponto acima
         if l[0].isspace() or not RE_CITACAO_LEGAL.search(norm(l)) or "nao verificad" in norm(l):
             continue
         nums = re.findall(r"\[(\d+)", l)
-        if nums and not any(fonte_oficial(u) for n in nums for u in urls_por_num.get(n, [])):
+        if nums and not any(u == "acervo:" or fonte_oficial(u) for n in nums for u in urls_por_num.get(n, [])):
             sem_oficial.append(l.strip())
 
     itens = [
