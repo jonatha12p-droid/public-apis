@@ -64,7 +64,10 @@ Cuidados antes de usar:
 
 Por que pode interessar: na pesquisa de redes sociais, o `ler_pagina.py` não conseguiu ler o TikTok Creator Academy, que é montado por JavaScript. Um navegador de verdade resolveria isso. O ambiente na nuvem já tem Chromium e Playwright instalados, mas não testei se funcionaria com o bloqueio de rede.
 
-Ativar (não feito): `claude mcp add playwright -- npx @playwright/mcp@0.0.83 --isolated --headless`. Fixe a versão em vez de `@latest`, para não rodar código novo a cada início de sessão.
+**Instalado em 2026-10-22, a pedido do usuário.**
+- **MCP do projeto:** registrado em `.mcp.json`, que chama `.claude/mcp/playwright.sh`. O script fixa a versão 0.0.83, usa `--headless`, `--isolated` e `--output-dir /tmp/playwright-mcp`, e só no ambiente da nuvem acrescenta o caminho do Chromium (`/opt/pw-browsers/chromium`), `--no-sandbox` (quando roda como root) e o proxy de `HTTPS_PROXY`. Ele precisa ser aprovado no início da sessão.
+- **Teste:** 25 ferramentas, com cerca de 5.300 tokens de definições em toda sessão em que o servidor estiver ligado. Leu os preços do Vizard montados por JavaScript, que o `ler_pagina.py` via como "$0". O Canva bloqueia também o navegador, pelo Cloudflare.
+- **Para os pesquisadores:** o `ler_pagina.py --js` usa o Playwright do Node (já instalado globalmente na nuvem) sem o custo fixo do MCP. Os pesquisadores não recebem ferramentas de MCP.
 
 Cuidados:
 - **Contexto:** são mais de 45 ferramentas, e a descrição de todas entra no contexto. O README da própria Microsoft diz que, para agentes de código, o Playwright CLI com skills (https://github.com/microsoft/playwright-cli) gasta menos tokens que o MCP. Essa é a afirmação deles, não medi. Como o consumo de tokens é prioridade, vale olhar o CLI antes de ativar o MCP.
