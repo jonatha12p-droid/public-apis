@@ -86,3 +86,4 @@
 {"ts": "2026-10-22T02:11:33", "evento": "CUSTO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "etapa": "pesquisa", "tokens": 72635, "agente": "pesquisador-legal", "modelo": "sonnet"}
 {"ts": "2026-10-22T02:12:00", "evento": "ARQUIVADO", "id": "pesquisa/direito-de-imagem-cc-art-20-cf-art-5o-x-e-marco-civil-em-sit", "substituiu": false}
 {"ts": "2026-10-22T02:12:03", "evento": "RESPONDIDO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "resultado": "PARCIAL", "descartado": false}
+{"ts": "2026-10-22T02:12:22", "evento": "CUSTO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "etapa": "curadoria", "tokens": 24715, "agente": "diretor-pesquisa", "modelo": "haiku"}

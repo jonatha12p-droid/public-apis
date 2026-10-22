@@ -10,7 +10,7 @@ alvo: pesquisa/contrato-de-criacao-de-site-cessao-de-direitos-autorais-lgpd
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md
-tokens_subagentes: 72635
+tokens_subagentes: 97350
 resposta: escritorio/juridico/respostas/2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md
 ---
 # Pergunta
