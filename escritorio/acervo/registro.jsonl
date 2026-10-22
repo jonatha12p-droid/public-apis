@@ -64,3 +64,22 @@
 {"ts": "2026-10-22T01:42:45", "evento": "RESPONDIDO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "resultado": "MISS", "descartado": false}
 {"ts": "2026-10-22T01:42:51", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "curadoria", "tokens": 27171, "agente": "diretor-pesquisa", "modelo": "haiku"}
 {"ts": "2026-10-22T01:46:26", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "outro", "tokens": 63902, "agente": "redator-contratos", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md"}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_SEM_CANDIDATO", "agente": null}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "anúncio pago impulsionamento tráfego pago saúde CFM 2.336 CFO CFP Google Ads política saúde Meta anúncios", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "LGPD transferência internacional dados arts. 33 a 36 resolução ANPD 19/2024 cláusulas-padrão contratuais Google Analytics hospedagem exterior", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "jurisprudência STJ CDC finalismo mitigado aprofundado vulnerabilidade profissional liberal microempresa contrato serviço marketing digital site software", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "PARCIAL", "consulta": "direito de imagem código civil art. 20 constituição art. 5 X marco civil internet lei 12.965 guarda registros acesso aplicação portfólio depoimento", "andar": "*", "alvo": "pesquisa/contrato-de-criacao-de-site-cessao-de-direitos-autorais-lgpd"}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "licença banco de imagem shutterstock adobe stock freepik unsplash pexels uso em site de cliente transferência licença google fonts SIL open font license", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:47", "evento": "ROTA_SEM_CANDIDATO", "teste": true}
+{"ts": "2026-10-22T02:07:51", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T02:07:51", "evento": "ROTA_AMBIGUA", "teste": true}
+{"ts": "2026-10-22T02:07:55", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
