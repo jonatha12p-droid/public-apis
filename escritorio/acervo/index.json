@@ -212,6 +212,44 @@
    ],
    "palavras": 3245,
    "caminho": "pesquisa/contrato-de-criacao-de-site-cessao-de-direitos-autorais-lgpd.md"
+  },
+  {
+   "id": "pesquisa/direito-de-imagem-cc-art-20-cf-art-5o-x-e-marco-civil-em-sit",
+   "andar": "pesquisa",
+   "titulo": "Direito de imagem (CC art. 20, CF art. 5º X) e Marco Civil em site de profissional de saúde e portfólio de agência",
+   "tipo": "legislacao",
+   "tags": [
+    "direito de imagem",
+    "image rights",
+    "Código Civil art. 20",
+    "Marco Civil da Internet",
+    "registros de acesso",
+    "access logs",
+    "provedor de aplicações",
+    "application provider",
+    "Súmula 403 STJ",
+    "portfólio agência"
+   ],
+   "resumo": "Uso comercial de imagem de pessoa exige autorização (CC art. 20; CF art. 5º, V e X); Súmula 403 do STJ dispensa prova de prejuízo. Autorização por finalidade e prazo; conselho pode vedar uso mesmo autorizado (CFM 2.336/2023, art. 14). Portfólio: licença expressa, sem paciente identificável. Marco Civil: logs por 6 meses (art. 15) para provedor PJ com fins econômicos; enquadrar site de cliente ou agência é aberto. Contrato define quem guarda logs, onde, por quanto e quem atende ordem judicial. Incertezas: art. 15 sem fonte para cliente/agência; Tema 987 e embargos 2026 só por resumo; vigência do Decreto 12.975/2026 não lida; ADI 4815 e STJ 2026 só em resumo; CFP e menores não verificados.",
+   "criado": "2026-10-22",
+   "validade_dias": 60,
+   "nota": 4,
+   "fontes": [
+    "https://www.planalto.gov.br/ccivil_03/constituicao/constituicaocompilado.htm",
+    "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm",
+    "https://portal.stf.jus.br/noticias/verNoticiaDetalhe.asp?idConteudo=293336&ori=1",
+    "https://www.stj.jus.br/docs_internet/revista/eletronica/stj-revista-sumulas-2014_38_capSumula403.pdf",
+    "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2026/23022026-Mera-aparicao-em-documentario-sobre-assassinato-de-Daniella-Perez-nao-gera-direito-a-indenizacao.aspx",
+    "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
+    "https://sistemas.cfm.org.br/normas/arquivos/resolucoes/BR/2023/2336_2023.pdf",
+    "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm",
+    "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/decreto/d8771.htm",
+    "https://juridicocerto.com/p/faria-cendao-e-maia/artigos/prazo-de-guarda-de-registros-de-acesso-a-aplicacoes-de-internet-1736",
+    "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=5160549&numeroProcesso=1037396&classeProcesso=RE&numeroTema=987",
+    "https://www.mattosfilho.com.br/unico/stf-atualiza-teses-fixadas/"
+   ],
+   "palavras": 2542,
+   "caminho": "pesquisa/direito-de-imagem-cc-art-20-cf-art-5o-x-e-marco-civil-em-sit.md"
   }
  ]
 }

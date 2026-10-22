@@ -1,7 +1,7 @@
 ---
 de: juridico
 para: pesquisa
-status: aberto
+status: respondido
 nivel_sugerido: padrao
 palavras: direito de imagem código civil art. 20 constituição art. 5 X marco civil internet lei 12.965 guarda registros acesso aplicação portfólio depoimento
 criado: 2026-10-22
@@ -11,6 +11,7 @@ agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md
 tokens_subagentes: 72635
+resposta: escritorio/juridico/respostas/2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md
 ---
 # Pergunta
 Quais regras de direito de imagem e do Marco Civil da Internet afetam um site de profissional de saúde e o uso do site no portfólio da agência (fotos de pessoas, depoimentos, guarda de registros de acesso, formulários)?
