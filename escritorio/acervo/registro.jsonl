@@ -59,3 +59,7 @@
 {"ts": "2026-10-22T01:37:22", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md"}
 {"ts": "2026-10-22T01:37:25", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
 {"ts": "2026-10-22T01:37:25", "evento": "MISS", "consulta": "contrato criação site cessão direitos autorais lei 9.610 software 9.609 lgpd operador controlador dados sensíveis saúde formulário", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T01:42:03", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "pesquisa", "tokens": 99002, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T01:42:42", "evento": "ARQUIVADO", "id": "pesquisa/contrato-de-criacao-de-site-cessao-de-direitos-autorais-lgpd", "substituiu": false}
+{"ts": "2026-10-22T01:42:45", "evento": "RESPONDIDO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-22T01:42:51", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "curadoria", "tokens": 27171, "agente": "diretor-pesquisa", "modelo": "haiku"}

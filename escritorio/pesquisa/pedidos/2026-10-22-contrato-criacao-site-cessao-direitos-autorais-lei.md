@@ -1,7 +1,7 @@
 ---
 de: juridico
 para: pesquisa
-status: aberto
+status: respondido
 nivel_sugerido: padrao
 palavras: contrato criação site cessão direitos autorais lei 9.610 software 9.609 lgpd operador controlador dados sensíveis saúde formulário
 criado: 2026-10-22
@@ -10,6 +10,8 @@ alvo:
 agente: pesquisador-legal
 nivel: padrao
 saida: escritorio/pesquisa/rascunhos/2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md
+tokens_subagentes: 126173
+resposta: escritorio/juridico/respostas/2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md
 ---
 # Pergunta
 Base legal para contrato de criação de site entre agência e profissional de saúde ou autônomo: cessão ou licença de direitos autorais do site (layout, textos, imagens, código), uso de imagens e fontes de terceiros, e papel de cada parte na LGPD quando o site coleta dados de visitantes e pacientes (formulários, agendamento, WhatsApp)
