@@ -56,3 +56,6 @@
 {"ts": "2026-10-21T18:58:52", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "curadoria", "tokens": 34320, "agente": "diretor-pesquisa", "modelo": "haiku"}
 {"ts": "2026-10-22T01:34:58", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
 {"ts": "2026-10-22T01:34:58", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T01:37:22", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md"}
+{"ts": "2026-10-22T01:37:25", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T01:37:25", "evento": "MISS", "consulta": "contrato criação site cessão direitos autorais lei 9.610 software 9.609 lgpd operador controlador dados sensíveis saúde formulário", "andar": "*", "alvo": null}
