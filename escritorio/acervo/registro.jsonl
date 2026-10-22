@@ -1,0 +1,112 @@
+{"ts": "2026-10-21T13:48:50", "evento": "ROTA_AMBIGUA"}
+{"ts": "2026-10-21T13:48:50", "evento": "MISS", "consulta": "prompt caching batch api preço desconto TTL", "andar": "*"}
+{"ts": "2026-10-21T13:52:21", "evento": "ARQUIVADO", "id": "pesquisa/precos-de-prompt-caching-e-batch-api-da-anthropic-out-2026", "substituiu": false}
+{"ts": "2026-10-21T13:52:52", "evento": "ROTA_REGRA", "agente": "pesquisador-tecnico"}
+{"ts": "2026-10-21T13:52:52", "evento": "HIT", "consulta": "prompt caching batch api preço anthropic ttl cache", "andar": "*", "classe": "teste", "motivo_classe": "repeticao proposital do teste ponta a ponta"}
+{"ts": "2026-10-21T14:18:12", "evento": "HIT", "consulta": "claude code assinatura api custo cota", "andar": "*", "classe": "hit-falso", "motivo_classe": "a pesquisa existente marcava o peso do cache na cota como nao verificado"}
+{"ts": "2026-10-21T14:22:16", "evento": "HIT", "consulta": "peso leitura cache cota assinatura claude code limite uso", "andar": "*", "classe": "hit-falso", "motivo_classe": "a pesquisa existente marcava o peso do cache na cota como nao verificado"}
+{"ts": "2026-10-21T14:22:30", "evento": "ROTA_AMBIGUA"}
+{"ts": "2026-10-21T14:22:30", "evento": "HIT", "consulta": "cache prompt cota assinatura batch", "andar": "*", "classe": "hit-falso", "motivo_classe": "a pesquisa existente marcava o peso do cache na cota como nao verificado"}
+{"ts": "2026-10-21T14:25:34", "evento": "ARQUIVADO", "id": "pesquisa/cache-de-prompt-na-cota-de-assinatura-pro-max-do-claude-code", "substituiu": false}
+{"ts": "2026-10-21T15:11:37", "evento": "REVISADO"}
+{"ts": "2026-10-21T15:32:55", "evento": "PEDIDO", "de": "redes-sociais", "para": "pesquisa", "arquivo": "2026-10-21-frequencia-posts-instagram-tiktok.md"}
+{"ts": "2026-10-21T15:32:55", "evento": "ROTA_REGRA", "agente": "pesquisador-redes-sociais"}
+{"ts": "2026-10-21T15:32:55", "evento": "MISS", "consulta": "frequência posts instagram tiktok perfil pequeno alcance", "andar": "*", "alvo": null}
+{"ts": "2026-10-21T16:02:40", "evento": "RESPONDIDO", "pedido": "2026-10-21-frequencia-posts-instagram-tiktok.md", "resultado": "MISS", "descartado": true}
+{"ts": "2026-10-21T16:11:06", "evento": "PEDIDO", "de": "redes-sociais", "para": "pesquisa", "arquivo": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md"}
+{"ts": "2026-10-21T16:11:06", "evento": "ROTA_REGRA", "agente": "pesquisador-redes-sociais"}
+{"ts": "2026-10-21T16:11:06", "evento": "MISS", "consulta": "frequência horário posts instagram tiktok alcance", "andar": "*", "alvo": null}
+{"ts": "2026-10-21T16:15:20", "evento": "ARQUIVADO", "id": "pesquisa/frequencia-semanal-e-horarios-de-publicacao-no-instagram-e-n", "substituiu": false}
+{"ts": "2026-10-21T16:15:22", "evento": "RESPONDIDO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-custo-tokens-cache-batch.md", "etapa": "falha", "tokens": 54197, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-custo-tokens-cache-batch.md", "etapa": "triagem", "tokens": 58993, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-custo-tokens-cache-batch.md", "etapa": "pesquisa", "tokens": 129239, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-custo-tokens-cache-batch.md", "etapa": "curadoria", "tokens": 71682, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-custo-tokens-cache-batch-repeticao.md", "etapa": "hit", "tokens": 59378, "nota": "teste de repeticao, agente generico", "teste": true}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-cache-na-cota-assinatura.md", "etapa": "triagem", "tokens": 13501, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-cache-na-cota-assinatura.md", "etapa": "pesquisa", "tokens": 71278, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-cache-na-cota-assinatura.md", "etapa": "curadoria", "tokens": 26782, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-posts-instagram-tiktok.md", "etapa": "pesquisa", "tokens": 40072, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-posts-instagram-tiktok.md", "etapa": "curadoria", "tokens": 17633, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-posts-instagram-tiktok.md", "etapa": "falha", "tokens": 26570, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-posts-instagram-tiktok.md", "etapa": "falha", "tokens": 31290, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:09", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-posts-instagram-tiktok.md", "etapa": "rodada", "tokens": 83927, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-posts-instagram-tiktok.md", "etapa": "curadoria", "tokens": 20537, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "etapa": "pesquisa", "tokens": 76809, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "etapa": "curadoria", "tokens": 21432, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "etapa": "rodada", "tokens": 67374, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T17:52:10", "evento": "CUSTO", "pedido": "2026-10-21-frequencia-horario-posts-instagram-tiktok-v2.md", "etapa": "curadoria", "tokens": 26746, "nota": "medido em 2026-10-21, lancado depois"}
+{"ts": "2026-10-21T18:16:32", "evento": "PEDIDO", "de": "redes-sociais", "para": "pesquisa", "arquivo": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md"}
+{"ts": "2026-10-21T18:16:32", "evento": "ROTA_REGRA", "agente": "pesquisador-redes-sociais"}
+{"ts": "2026-10-21T18:16:32", "evento": "MISS", "consulta": "ferramenta ia redes sociais crescer conteudo app", "andar": "*", "alvo": null}
+{"ts": "2026-10-21T18:20:36", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "pesquisa", "tokens": 96698, "agente": "pesquisador-redes-sociais", "modelo": "sonnet"}
+{"ts": "2026-10-21T18:21:41", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "curadoria", "tokens": 23293, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-21T18:25:21", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "rodada", "tokens": 90508, "agente": "pesquisador-redes-sociais", "modelo": "sonnet"}
+{"ts": "2026-10-21T18:26:40", "evento": "ARQUIVADO", "id": "pesquisa/ferramentas-de-ia-em-2026-para-crescer-no-instagram-tiktok-e", "substituiu": false}
+{"ts": "2026-10-21T18:26:44", "evento": "RESPONDIDO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-21T18:26:51", "evento": "CUSTO", "pedido": "2026-10-21-ferramentas-ia-crescer-redes-sociais.md", "etapa": "curadoria", "tokens": 31131, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-21T18:43:30", "evento": "PEDIDO", "de": "marketing", "para": "pesquisa", "arquivo": "2026-10-21-estrategias-call-vendas-servicos-digitais.md"}
+{"ts": "2026-10-21T18:43:30", "evento": "ROTA_AMBIGUA", "agente": null}
+{"ts": "2026-10-21T18:43:30", "evento": "MISS", "consulta": "estrategia vendas call fechamento objecao preco", "andar": "*", "alvo": null}
+{"ts": "2026-10-21T18:50:32", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "pesquisa", "tokens": 137929, "agente": "pesquisador-mercado", "modelo": "sonnet"}
+{"ts": "2026-10-21T18:51:52", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "curadoria", "tokens": 25582, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-21T18:58:13", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "rodada", "tokens": 146695, "agente": "pesquisador-mercado", "modelo": "sonnet"}
+{"ts": "2026-10-21T18:58:40", "evento": "ARQUIVADO", "id": "pesquisa/estrategias-de-call-de-vendas-para-servicos-digitais-de-baix", "substituiu": false}
+{"ts": "2026-10-21T18:58:43", "evento": "RESPONDIDO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-21T18:58:52", "evento": "CUSTO", "pedido": "2026-10-21-estrategias-call-vendas-servicos-digitais.md", "etapa": "curadoria", "tokens": 34320, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T01:34:58", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T01:34:58", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T01:37:22", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md"}
+{"ts": "2026-10-22T01:37:25", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T01:37:25", "evento": "MISS", "consulta": "contrato criação site cessão direitos autorais lei 9.610 software 9.609 lgpd operador controlador dados sensíveis saúde formulário", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T01:42:03", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "pesquisa", "tokens": 99002, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T01:42:42", "evento": "ARQUIVADO", "id": "pesquisa/contrato-de-criacao-de-site-cessao-de-direitos-autorais-lgpd", "substituiu": false}
+{"ts": "2026-10-22T01:42:45", "evento": "RESPONDIDO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-22T01:42:51", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "curadoria", "tokens": 27171, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T01:46:26", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "outro", "tokens": 63902, "agente": "redator-contratos", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md"}
+{"ts": "2026-10-22T02:07:37", "evento": "PEDIDO", "de": "juridico", "para": "pesquisa", "arquivo": "2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md"}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_SEM_CANDIDATO", "agente": null}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "anúncio pago impulsionamento tráfego pago saúde CFM 2.336 CFO CFP Google Ads política saúde Meta anúncios", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "LGPD transferência internacional dados arts. 33 a 36 resolução ANPD 19/2024 cláusulas-padrão contratuais Google Analytics hospedagem exterior", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "jurisprudência STJ CDC finalismo mitigado aprofundado vulnerabilidade profissional liberal microempresa contrato serviço marketing digital site software", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "PARCIAL", "consulta": "direito de imagem código civil art. 20 constituição art. 5 X marco civil internet lei 12.965 guarda registros acesso aplicação portfólio depoimento", "andar": "*", "alvo": "pesquisa/contrato-de-criacao-de-site-cessao-de-direitos-autorais-lgpd"}
+{"ts": "2026-10-22T02:07:42", "evento": "ROTA_REGRA", "agente": "pesquisador-legal"}
+{"ts": "2026-10-22T02:07:42", "evento": "MISS", "consulta": "licença banco de imagem shutterstock adobe stock freepik unsplash pexels uso em site de cliente transferência licença google fonts SIL open font license", "andar": "*", "alvo": null}
+{"ts": "2026-10-22T02:07:47", "evento": "ROTA_SEM_CANDIDATO", "teste": true}
+{"ts": "2026-10-22T02:07:51", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T02:07:51", "evento": "ROTA_AMBIGUA", "teste": true}
+{"ts": "2026-10-22T02:07:55", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T02:11:33", "evento": "CUSTO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "etapa": "pesquisa", "tokens": 72635, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:12:00", "evento": "ARQUIVADO", "id": "pesquisa/direito-de-imagem-cc-art-20-cf-art-5o-x-e-marco-civil-em-sit", "substituiu": false}
+{"ts": "2026-10-22T02:12:03", "evento": "RESPONDIDO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "resultado": "PARCIAL", "descartado": false}
+{"ts": "2026-10-22T02:12:22", "evento": "CUSTO", "pedido": "2026-10-22-direito-de-imagem-codigo-civil-art-20-constituicao.md", "etapa": "curadoria", "tokens": 24715, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T02:13:15", "evento": "CUSTO", "pedido": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md", "etapa": "pesquisa", "tokens": 132585, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:13:33", "evento": "CUSTO", "pedido": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md", "etapa": "pesquisa", "tokens": 107252, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:14:13", "evento": "ARQUIVADO", "id": "pesquisa/jurisprudencia-do-stj-apos-2020-sobre-cdc-e-finalismo-aprofu", "substituiu": false}
+{"ts": "2026-10-22T02:14:15", "evento": "RESPONDIDO", "pedido": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-22T02:14:26", "evento": "ARQUIVADO", "id": "pesquisa/lgpd-arts-33-a-36-e-resolucao-cd-anpd-19-2024-transferencia-", "substituiu": false}
+{"ts": "2026-10-22T02:14:33", "evento": "RESPONDIDO", "pedido": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-22T02:14:35", "evento": "CUSTO", "pedido": "2026-10-22-jurisprudencia-stj-cdc-finalismo-mitigado-aprofund.md", "etapa": "curadoria", "tokens": 24398, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T02:14:41", "evento": "CUSTO", "pedido": "2026-10-22-lgpd-transferencia-internacional-dados-arts-33-a-3.md", "etapa": "curadoria", "tokens": 30835, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T02:14:46", "evento": "CUSTO", "pedido": "2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md", "etapa": "pesquisa", "tokens": 87726, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:15:22", "evento": "CUSTO", "pedido": "2026-10-22-licenca-banco-de-imagem-shutterstock-adobe-stock-f.md", "etapa": "curadoria", "tokens": 19977, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T02:19:57", "evento": "CUSTO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "etapa": "pesquisa", "tokens": 158769, "agente": "pesquisador-legal", "modelo": "sonnet"}
+{"ts": "2026-10-22T02:20:47", "evento": "ARQUIVADO", "id": "pesquisa/anuncio-pago-de-medico-dentista-e-psicologo-regras-dos-conse", "substituiu": false}
+{"ts": "2026-10-22T02:20:50", "evento": "RESPONDIDO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "resultado": "MISS", "descartado": false}
+{"ts": "2026-10-22T02:20:56", "evento": "CUSTO", "pedido": "2026-10-22-anuncio-pago-impulsionamento-trafego-pago-saude-cf.md", "etapa": "curadoria", "tokens": 36040, "agente": "diretor-pesquisa", "modelo": "haiku"}
+{"ts": "2026-10-22T02:26:20", "evento": "CUSTO", "pedido": "2026-10-22-contrato-criacao-site-cessao-direitos-autorais-lei.md", "etapa": "outro", "tokens": 123779, "agente": "redator-contratos", "modelo": "sonnet"}
+{"ts": "2026-10-22T03:29:49", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T03:29:49", "evento": "PARCIAL", "consulta": "direito de imagem código civil art. 20 constituição art. 5 X marco civil internet lei 12.965 guarda registros acesso aplicação portfólio depoimento", "andar": "*", "alvo": "pesquisa/direito-de-imagem-cc-art-20-cf-art-5o-x-e-marco-civil-em-sit", "teste": true}
+{"ts": "2026-10-22T03:29:56", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T03:29:56", "evento": "HIT", "consulta": "transferência internacional dados LGPD cláusulas-padrão ANPD hospedagem uruguai", "andar": "*", "alvo": "pesquisa/lgpd-arts-33-a-36-e-resolucao-cd-anpd-19-2024-transferencia-", "teste": true}
+{"ts": "2026-10-22T03:29:56", "evento": "RESPONDIDO", "pedido": "p2.md", "resultado": "HIT", "descartado": false, "teste": true}
+{"ts": "2026-10-22T03:30:04", "evento": "ROTA_REGRA", "agente": "pesquisador-legal", "teste": true}
+{"ts": "2026-10-22T03:30:04", "evento": "HIT", "consulta": "transferência internacional dados LGPD cláusulas-padrão ANPD uruguai argentina chile", "andar": "*", "alvo": "pesquisa/lgpd-arts-33-a-36-e-resolucao-cd-anpd-19-2024-transferencia-", "teste": true}
+{"ts": "2026-10-22T03:30:04", "evento": "RESPONDIDO", "pedido": "p3.md", "resultado": "HIT", "descartado": false, "teste": true}

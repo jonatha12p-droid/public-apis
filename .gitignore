@@ -128,3 +128,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+# material interno do usuario: nunca enviar ao repositorio (publico)
+escritorio/privado/
